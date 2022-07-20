@@ -1,0 +1,43 @@
+================================================================================
+class decl
+================================================================================
+
+class Test()
+
+class Test(a, atomic b, c)
+
+class Test(
+    a
+    atomic b
+    c
+)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (item
+    (class
+      (identifier)
+      (parameters)))
+  (item
+    (class
+      (identifier)
+      (parameters
+        (parameter
+          (identifier))
+        (parameter
+          (atomic)
+          (identifier))
+        (parameter
+          (identifier)))))
+  (item
+    (class
+      (identifier)
+      (parameters
+        (parameter
+          (identifier))
+        (parameter
+          (atomic)
+          (identifier))
+        (parameter
+          (identifier))))))

@@ -1,0 +1,8 @@
+node_modules
+
+# ignored initially, may be commited later
+/bindings
+/src
+/binding.gyp
+/Cargo.toml
+/tree-sitter-dada.wasm

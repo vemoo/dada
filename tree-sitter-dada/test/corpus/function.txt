@@ -1,0 +1,52 @@
+================================================================================
+function decl
+================================================================================
+
+fn x() -> {
+  return 12
+}
+
+async fn x() {
+}
+
+fn x(a, atomic b) {
+}
+
+fn x(
+  a
+  atomic b
+) {}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (item
+    (function
+      (identifier)
+      (parameters)
+      (expr
+        (return
+          (expr
+            (literal_integer))))))
+  (item
+    (function
+      (identifier)
+      (parameters)))
+  (item
+    (function
+      (identifier)
+      (parameters
+        (parameter
+          (identifier))
+        (parameter
+          (atomic)
+          (identifier)))))
+  (item
+    (function
+      (identifier)
+      (parameters
+        (parameter
+          (identifier))
+        (parameter
+          (atomic)
+          (identifier))))))

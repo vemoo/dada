@@ -50,12 +50,14 @@ module.exports = grammar({
                 $.boolean_literal,
                 $.format_string,
                 $.binary_op_expr,
+                $.unary_expr,
                 $.dot_expr,
                 $.call_expr,
                 $.parenthesized_expr,
                 $.block_expr,
                 $.atomic_expr,
                 $.loop_expr,
+                $.while_expr,
                 $.if_expr
             ),
         identifier: () => /[A-Za-z_][A-Za-z0-9_]*/,
@@ -68,7 +70,7 @@ module.exports = grammar({
                 $.expr
             ),
         return: ($) => prec.left(seq("return", optional($.expr))),
-        integer_literal: () => /[0-9][0-9_]*/,
+        integer_literal: () => /[0-9][0-9_]*[a-z]*/,
         float_literal: () => /[0-9][0-9_]*\.[0-9][0-9_]*/,
         boolean_literal: () => choice("true", "false"),
         format_string: ($) =>
@@ -90,6 +92,7 @@ module.exports = grammar({
                     )
                 )
             ),
+        unary_expr: ($) => prec.left(2, seq("-", $.expr)),
         dot_expr: ($) =>
             prec.left(
                 1,

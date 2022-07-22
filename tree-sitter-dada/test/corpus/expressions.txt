@@ -9,10 +9,8 @@ numbers
 --------------------------------------------------------------------------------
 
 (source_file
-  (expr
-    (literal_integer))
-  (expr
-    (literal_float)))
+  (integer_literal)
+  (float_literal))
 
 ================================================================================
 format string
@@ -27,18 +25,12 @@ format string
 --------------------------------------------------------------------------------
 
 (source_file
-  (expr
-    (format_string))
-  (expr
+  (format_string)
+  (format_string
+    (integer_literal))
+  (format_string
     (format_string
-      (expr
-        (literal_integer))))
-  (expr
-    (format_string
-      (expr
-        (format_string
-          (expr
-            (identifier)))))))
+      (identifier))))
 
 ================================================================================
 bin op
@@ -49,17 +41,10 @@ bin op
 --------------------------------------------------------------------------------
 
 (source_file
-  (expr
-    (binary_op
-      (expr
-        (binary_op
-          (expr
-            (binary_op
-              (expr
-                (literal_integer))
-              (expr
-                (literal_integer))))
-          (expr
-            (literal_integer))))
-      (expr
-        (literal_integer)))))
+  (binary_op_expr
+    (binary_op_expr
+      (binary_op_expr
+        (integer_literal)
+        (integer_literal))
+      (integer_literal))
+    (integer_literal)))

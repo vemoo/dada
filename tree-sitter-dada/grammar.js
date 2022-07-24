@@ -7,6 +7,11 @@ const BinaryOps = [
     { ops: ["/", "*"], prec: 3 },
 ];
 
+// not defined as rules because at the moment rules cannot be use inside tokens
+// https://github.com/tree-sitter/tree-sitter/issues/449#issuecomment-533702316
+const NumberPart = /[0-9][0-9_]*/;
+const Identifier = /[A-Za-z_][A-Za-z0-9_]*/;
+
 module.exports = grammar({
     name: "dada",
     word: ($) => $.identifier,
@@ -61,7 +66,7 @@ module.exports = grammar({
                 $.if_expr,
                 $.tuple_expr
             ),
-        identifier: () => /[A-Za-z_][A-Za-z0-9_]*/,
+        identifier: () => Identifier,
         type: ($) => $.identifier,
         variable_declaration: ($) =>
             seq(
@@ -71,8 +76,16 @@ module.exports = grammar({
                 $.expr
             ),
         return: ($) => prec.left(seq("return", optional($.expr))),
-        integer_literal: () => /[0-9][0-9_]*[a-z]*/,
-        float_literal: () => /[0-9][0-9_]*\.[0-9][0-9_]*/,
+        integer_literal: () =>
+            token(seq(NumberPart, optional(token.immediate(Identifier)))),
+        float_literal: () =>
+            token(
+                seq(
+                    NumberPart,
+                    token.immediate("."),
+                    token.immediate(NumberPart)
+                )
+            ),
         boolean_literal: () => choice("true", "false"),
         format_string: ($) =>
             seq(

@@ -58,7 +58,8 @@ module.exports = grammar({
                 $.atomic_expr,
                 $.loop_expr,
                 $.while_expr,
-                $.if_expr
+                $.if_expr,
+                $.tuple_expr
             ),
         identifier: () => /[A-Za-z_][A-Za-z0-9_]*/,
         type: ($) => $.identifier,
@@ -135,6 +136,16 @@ module.exports = grammar({
                 $.expr,
                 $.block_expr,
                 optional(seq("else", $.block_expr))
+            ),
+        tuple_expr: ($) =>
+            seq(
+                "(",
+                seq(
+                    $.expr,
+                    repeat1(seq($._list_sep, $.expr)),
+                    optional($._list_sep)
+                ),
+                ")"
             ),
     },
 });

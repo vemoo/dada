@@ -48,3 +48,68 @@ bin op
         (integer_literal))
       (integer_literal))
     (integer_literal)))
+
+================================================================================
+assignment
+================================================================================
+
+x = 1
+x := 24
+x *= 2
+x /= 6
+x -= 13
+x += 28
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (variable_declaration
+    (identifier)
+    (integer_literal))
+  (binary_op_expr
+    (identifier)
+    (integer_literal))
+  (binary_op_expr
+    (identifier)
+    (integer_literal))
+  (binary_op_expr
+    (identifier)
+    (integer_literal))
+  (binary_op_expr
+    (identifier)
+    (integer_literal))
+  (binary_op_expr
+    (identifier)
+    (integer_literal)))
+
+================================================================================
+tuples
+================================================================================
+
+# when not inside a block expression gets interpreted as call_expr
+{
+(1, 2)
+(
+  3
+  4
+)
+(("a", "b"), 34, false)
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (block_expr
+    (tuple_expr
+      (integer_literal)
+      (integer_literal))
+    (tuple_expr
+      (integer_literal)
+      (integer_literal))
+    (tuple_expr
+      (tuple_expr
+        (format_string)
+        (format_string))
+      (integer_literal)
+      (boolean_literal))))

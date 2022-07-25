@@ -1,0 +1,124 @@
+================================================================================
+extra tokens
+================================================================================
+
+p = "{22 44}"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (variable_declaration
+    (identifier)
+    (format_string
+      (ERROR
+        (integer_literal))
+      (integer_literal))))
+
+================================================================================
+missing expression
+================================================================================
+
+p = "{}"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (variable_declaration
+    (identifier)
+    (format_string
+      (MISSING identifier))))
+
+================================================================================
+expected expression
+================================================================================
+
+p = "{class Point(our a, our b)}"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (variable_declaration
+    (identifier)
+    (format_string
+      (ERROR
+        (identifier))
+      (call_expr
+        (identifier)
+        (ERROR
+          (permission_specifier)
+          (identifier))
+        (identifier)))))
+
+================================================================================
+missing decimal
+================================================================================
+
+a = 1.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (variable_declaration
+    (identifier)
+    (dot_expr
+      (integer_literal)
+      (MISSING identifier))))
+
+================================================================================
+float spaces
+================================================================================
+
+a = 1 .1
+b = 1. 1
+c = 1 . 1
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (variable_declaration
+    (identifier)
+    (integer_literal))
+  (ERROR)
+  (integer_literal)
+  (variable_declaration
+    (identifier)
+    (integer_literal))
+  (ERROR)
+  (integer_literal)
+  (variable_declaration
+    (identifier)
+    (integer_literal))
+  (ERROR)
+  (integer_literal))
+
+================================================================================
+missing type
+================================================================================
+
+fn param5(a:, b,) { }
+fn param9(
+    a: ,
+    b
+) { }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function
+    (identifier)
+    (parameters
+      (parameter
+        (identifier))
+      (ERROR)
+      (parameter
+        (identifier)))
+    (block_expr))
+  (function
+    (identifier)
+    (parameters
+      (parameter
+        (identifier))
+      (ERROR)
+      (parameter
+        (identifier)))
+    (block_expr)))

@@ -1,10 +1,20 @@
 /// <reference path="./node_modules/tree-sitter-cli/dsl.d.ts" />
 
+const Prec = {
+    assign: 0,
+    comparative: 1,
+    additive: 2,
+    multiplicative: 3,
+    unary: 4,
+    call: 5,
+    dot: 6,
+};
+
 const BinaryOps = [
-    { ops: ["+=", "-=", "/=", "*=", ":="], prec: 6 },
-    { ops: ["==", "<", ">", "<=", ">="], prec: 5 },
-    { ops: ["+", "-"], prec: 4 },
-    { ops: ["/", "*"], prec: 3 },
+    { ops: ["+=", "-=", "/=", "*=", ":="], prec: Prec.assign },
+    { ops: ["==", "<", ">", "<=", ">="], prec: Prec.comparative },
+    { ops: ["+", "-"], prec: Prec.additive },
+    { ops: ["/", "*"], prec: Prec.multiplicative },
 ];
 
 // not defined as rules because at the moment rules cannot be use inside tokens
@@ -25,7 +35,7 @@ module.exports = grammar({
         atomic: () => "atomic",
         _parameter_or_variable: ($) =>
             prec.left(
-                -2,
+                -1,
                 seq(
                     optional($.atomic),
                     $.identifier,
@@ -69,11 +79,14 @@ module.exports = grammar({
         identifier: () => Identifier,
         type: ($) => $.identifier,
         variable_declaration: ($) =>
-            seq(
-                $._parameter_or_variable,
-                optional(seq(":", $.type)),
-                "=",
-                $.expr
+            prec.left(
+                Prec.assign,
+                seq(
+                    $._parameter_or_variable,
+                    optional(seq(":", $.type)),
+                    "=",
+                    $.expr
+                )
             ),
         return: ($) => prec.left(seq("return", optional($.expr))),
         integer_literal: () =>
@@ -106,10 +119,10 @@ module.exports = grammar({
                     )
                 )
             ),
-        unary_expr: ($) => prec.left(2, seq("-", $.expr)),
+        unary_expr: ($) => prec.left(Prec.unary, seq("-", $.expr)),
         dot_expr: ($) =>
             prec.left(
-                1,
+                Prec.dot,
                 seq(
                     $.expr,
                     ".",
@@ -125,7 +138,7 @@ module.exports = grammar({
             ),
         call_expr: ($) =>
             prec.left(
-                1,
+                Prec.call,
                 seq(
                     $.expr,
                     seq(

@@ -43,10 +43,24 @@ bin op
 
 (source_file
   (binary_op_expr
+    (integer_literal)
     (binary_op_expr
       (binary_op_expr
         (integer_literal)
         (integer_literal))
+      (integer_literal))))
+
+================================================================================
+unary op
+================================================================================
+
+-1*2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_op_expr
+    (unary_expr
       (integer_literal))
     (integer_literal)))
 
@@ -114,3 +128,17 @@ tuples
         (format_string))
       (integer_literal)
       (boolean_literal))))
+
+================================================================================
+dot call
+================================================================================
+
+a.b()
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (call_expr
+    (dot_expr
+      (identifier)
+      (identifier))))

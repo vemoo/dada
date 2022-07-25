@@ -29,15 +29,14 @@ module.exports = grammar({
     supertypes: ($) => [$.item, $.expr],
     rules: {
         source_file: ($) => repeat(choice($.item, $.expr)),
-        comment: () => seq("#", /[^\n]*/),
+        comment: () => token(seq("#", /[^\n]*/)),
         _list_sep: () => choice(",", "\n"),
         item: ($) => choice($.class, $.function),
-        atomic: () => "atomic",
         _parameter_or_variable: ($) =>
             prec.left(
                 -1,
                 seq(
-                    optional($.atomic),
+                    optional("atomic"),
                     $.identifier,
                     optional($.type_annotation)
                 )

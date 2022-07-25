@@ -24,7 +24,6 @@ class Test(
       (parameter
         (identifier))
       (parameter
-        (atomic)
         (identifier))
       (parameter
         (identifier))))
@@ -34,7 +33,6 @@ class Test(
       (parameter
         (identifier))
       (parameter
-        (atomic)
         (identifier))
       (parameter
         (identifier)))))

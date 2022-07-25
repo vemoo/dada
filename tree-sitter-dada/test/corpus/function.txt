@@ -36,7 +36,6 @@ fn x(
       (parameter
         (identifier))
       (parameter
-        (atomic)
         (identifier)))
     (block_expr))
   (function
@@ -45,6 +44,5 @@ fn x(
       (parameter
         (identifier))
       (parameter
-        (atomic)
         (identifier)))
     (block_expr)))

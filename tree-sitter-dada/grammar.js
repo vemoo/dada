@@ -163,14 +163,17 @@ module.exports = grammar({
                 optional(seq("else", $.block_expr))
             ),
         tuple_expr: ($) =>
-            seq(
-                "(",
+            choice(
+                seq("(", ")"),
                 seq(
-                    $.expr,
-                    repeat1(seq($._list_sep, $.expr)),
-                    optional($._list_sep)
-                ),
-                ")"
+                    "(",
+                    seq(
+                        $.expr,
+                        repeat1(seq($._list_sep, $.expr)),
+                        optional($._list_sep)
+                    ),
+                    ")"
+                )
             ),
     },
 });

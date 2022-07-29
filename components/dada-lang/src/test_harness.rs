@@ -22,6 +22,9 @@ pub struct Options {
     /// Instead of validating `.ref` files, generate them
     #[structopt(long)]
     bless: bool,
+
+    #[structopt(long)]
+    check_tree_sitter: bool,
 }
 
 impl Options {
@@ -33,6 +36,9 @@ impl Options {
         if self.dada_path.is_empty() {
             eyre::bail!("no test paths given; try --dada-path");
         }
+
+        let mut tree_sitter_parser = tree_sitter::Parser::new();
+        tree_sitter_parser.set_language(tree_sitter_dada::language())?;
 
         let mut lsp_client = lsp_client::ChildSession::spawn();
         lsp_client.send_init()?;
@@ -142,31 +148,59 @@ impl Options {
         let expected_diagnostics = expected_diagnostics(path)?;
         let path_without_extension = path.with_extension("");
         fs::create_dir_all(&path_without_extension)?;
+        // create tree sitter parser only if needed
+        let mut tree_sitter_parser = None;
         self.test_dada_file_normal(
             &path_without_extension,
             &expected_diagnostics,
             expected_queries,
+            &mut tree_sitter_parser,
         )
         .await?;
         self.test_dada_file_in_ide(lsp_client, &path_without_extension, &expected_diagnostics)?;
         Ok(expected_diagnostics.fixmes)
     }
 
-    #[tracing::instrument(level = "debug", skip(self))]
+    #[tracing::instrument(level = "debug", skip(self, tree_sitter_parser))]
     async fn test_dada_file_normal(
         &self,
         path: &Path,
         expected_diagnostics: &ExpectedDiagnostics,
         expected_queries: &[Query],
+        tree_sitter_parser: &mut Option<tree_sitter::Parser>,
     ) -> eyre::Result<()> {
         let mut db = dada_db::Db::default();
         let source_path = path.with_extension("dada");
         let contents = std::fs::read_to_string(&source_path)
             .with_context(|| format!("reading `{}`", &source_path.display()))?;
+
         let input_file = db.new_input_file(&source_path, contents);
         let diagnostics = db.diagnostics(input_file);
 
         let mut errors = Errors::default();
+
+        if self.check_tree_sitter {
+            let parser = match tree_sitter_parser {
+                Some(p) => p,
+                None => {
+                    let mut p = tree_sitter::Parser::new();
+                    p.set_language(tree_sitter_dada::language())?;
+                    *tree_sitter_parser = Some(p);
+                    tree_sitter_parser.as_mut().unwrap()
+                }
+            };
+            let tree = parser
+                .parse(input_file.source_text(&db), None)
+                .ok_or_else(|| eyre::eyre!("failed to parse {}", source_path.display()))?;
+            if tree.root_node().has_error() != !expected_diagnostics.compile.is_empty() {
+                errors.push_result(Err(if tree.root_node().has_error() {
+                    eyre::eyre!("tree_sitter_dada: expected no error but error found")
+                } else {
+                    eyre::eyre!("tree_sitter_dada: expected error but none error found")
+                }));
+            }
+        };
+
         self.match_diagnostics_against_expectations(
             &db,
             &diagnostics,

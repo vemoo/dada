@@ -24,7 +24,7 @@ Effect : "async";
 ArgumentList : "\(" "\)"
              | "\(" Identifier { "," Identifier } "\)";
 
-FunctionBody : "\{" { Expr } MaybeReturnWithoutExpr "\}";
+FunctionBody : BlockExpr;
 
 
 /*** everything after this is expressions ***/
@@ -35,7 +35,6 @@ Expr : LocalVariable
 
 ReturnWithExpr : "return" Expr;
 ReturnWithoutExpr : "return";
-MaybeReturnWithoutExpr : [ ReturnWithoutExpr ];
 
 Expr5 : Expr4 { ( "\+=" | "-=" | "/=" | "\*=" | ":=" ) Expr4 };
 
@@ -89,11 +88,11 @@ IntegerLiteral : "[0-9][0-9_]*";
 // quotes - `\"` doesn't work.
 StringLiteral : "\u{0022}(?s:[^\u{0022}]*)\u{0022}";
 
-BlockExpr : "\{" { Expr } MaybeReturnWithoutExpr "\}";
+BlockExpr : "\{" { Expr } [ReturnWithoutExpr] "\}";
 
 AtomicBlock : "atomic" BlockExpr;
 
-IfExpr : "if" Condition "\{" { Expr } ( "\}" | "\}" "else" "\{" { Expr } "\}" );
+IfExpr : "if" Condition BlockExpr ["else" BlockExpr];
 
 // fixme production grammar doesn't allow "{"
 Condition: Expr;

@@ -6,11 +6,9 @@
 
 use id_tree::Tree;
 
+use crate::grammar::Grammar;
 use miette::{miette, Result};
 use parol_runtime::parser::{ParseTreeStackEntry, ParseTreeType, UserActionsTrait};
-
-use crate::grammar::Grammar;
-use std::path::Path;
 
 ///
 /// The `GrammarTrait` trait is automatically generated for the
@@ -18,18 +16,13 @@ use std::path::Path;
 /// All functions have default implementations.
 ///
 pub trait GrammarTrait {
-    ///
-    /// Implement this method if you need the provided information
-    ///
-    fn init(&mut self, _file_name: &Path) {}
-
     /// Semantic action for production 0:
     ///
     /// Items: ItemsList /* Vec */;
     ///
-    fn items_0(
+    fn items(
         &mut self,
-        _items_list_0: &ParseTreeStackEntry,
+        _items_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -41,8 +34,8 @@ pub trait GrammarTrait {
     ///
     fn items_list_0(
         &mut self,
-        _item_0: &ParseTreeStackEntry,
-        _items_list_1: &ParseTreeStackEntry,
+        _item: &ParseTreeStackEntry,
+        _items_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -62,7 +55,7 @@ pub trait GrammarTrait {
     ///
     fn item_0(
         &mut self,
-        _class_0: &ParseTreeStackEntry,
+        _class: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -74,7 +67,7 @@ pub trait GrammarTrait {
     ///
     fn item_1(
         &mut self,
-        _function_0: &ParseTreeStackEntry,
+        _function: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -84,11 +77,11 @@ pub trait GrammarTrait {
     ///
     /// Class: "class" Identifier FieldList;
     ///
-    fn class_0(
+    fn class(
         &mut self,
-        _class_0: &ParseTreeStackEntry,
-        _identifier_1: &ParseTreeStackEntry,
-        _field_list_2: &ParseTreeStackEntry,
+        _class: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
+        _field_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -98,10 +91,10 @@ pub trait GrammarTrait {
     ///
     /// FieldList: "\(" FieldListSuffix;
     ///
-    fn field_list_0(
+    fn field_list(
         &mut self,
-        _l_paren_0: &ParseTreeStackEntry,
-        _field_list_suffix_1: &ParseTreeStackEntry,
+        _l_paren: &ParseTreeStackEntry,
+        _field_list_suffix: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -113,7 +106,7 @@ pub trait GrammarTrait {
     ///
     fn field_list_suffix_0(
         &mut self,
-        _r_paren_0: &ParseTreeStackEntry,
+        _r_paren: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -125,9 +118,9 @@ pub trait GrammarTrait {
     ///
     fn field_list_suffix_1(
         &mut self,
-        _field_0: &ParseTreeStackEntry,
-        _field_list_list_1: &ParseTreeStackEntry,
-        _r_paren_2: &ParseTreeStackEntry,
+        _field: &ParseTreeStackEntry,
+        _field_list_list: &ParseTreeStackEntry,
+        _r_paren: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -135,13 +128,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 9:
     ///
-    /// FieldListList: "," Field FieldListList; // Vec<T>::Push
+    /// FieldListList: FieldListOpt /* Option */ Field FieldListList; // Vec<T>::Push
     ///
     fn field_list_list_0(
         &mut self,
-        _comma_0: &ParseTreeStackEntry,
-        _field_1: &ParseTreeStackEntry,
-        _field_list_list_2: &ParseTreeStackEntry,
+        _field_list_opt: &ParseTreeStackEntry,
+        _field: &ParseTreeStackEntry,
+        _field_list_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -149,45 +142,40 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 10:
     ///
-    /// FieldListList: Field FieldListList; // Vec<T>::Push
+    /// FieldListList: ; // Vec<T>::New
     ///
-    fn field_list_list_1(
-        &mut self,
-        _field_0: &ParseTreeStackEntry,
-        _field_list_list_1: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn field_list_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 11:
     ///
-    /// FieldListList: ; // Vec<T>::New
+    /// FieldListOpt: ","; // Option<T>::Some
     ///
-    fn field_list_list_2(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 12:
-    ///
-    /// Field: StorageMode Identifier;
-    ///
-    fn field_0(
+    fn field_list_opt_0(
         &mut self,
-        _storage_mode_0: &ParseTreeStackEntry,
-        _identifier_1: &ParseTreeStackEntry,
+        _comma: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
     }
 
+    /// Semantic action for production 12:
+    ///
+    /// FieldListOpt: ; // Option<T>::None
+    ///
+    fn field_list_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+        Ok(())
+    }
+
     /// Semantic action for production 13:
     ///
-    /// Field: Identifier;
+    /// Field: FieldOpt /* Option */ Identifier;
     ///
-    fn field_1(
+    fn field(
         &mut self,
-        _identifier_0: &ParseTreeStackEntry,
+        _field_opt: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -195,11 +183,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 14:
     ///
-    /// StorageMode: "atomic";
+    /// FieldOpt: StorageMode; // Option<T>::Some
     ///
-    fn storage_mode_0(
+    fn field_opt_0(
         &mut self,
-        _storage_mode_0: &ParseTreeStackEntry,
+        _storage_mode: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -207,30 +195,19 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 15:
     ///
-    /// Function: Effect "fn" Identifier ArgumentList FunctionBody;
+    /// FieldOpt: ; // Option<T>::None
     ///
-    fn function_0(
-        &mut self,
-        _effect_0: &ParseTreeStackEntry,
-        _fn_1: &ParseTreeStackEntry,
-        _identifier_2: &ParseTreeStackEntry,
-        _argument_list_3: &ParseTreeStackEntry,
-        _function_body_4: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn field_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 16:
     ///
-    /// Function: "fn" Identifier ArgumentList FunctionBody;
+    /// StorageMode: "atomic";
     ///
-    fn function_1(
+    fn storage_mode(
         &mut self,
-        _fn_0: &ParseTreeStackEntry,
-        _identifier_1: &ParseTreeStackEntry,
-        _argument_list_2: &ParseTreeStackEntry,
-        _function_body_3: &ParseTreeStackEntry,
+        _storage_mode: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -238,11 +215,15 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 17:
     ///
-    /// Effect: "async";
+    /// Function: FunctionOpt /* Option */ "fn" Identifier ArgumentList FunctionBody;
     ///
-    fn effect_0(
+    fn function(
         &mut self,
-        _effect_0: &ParseTreeStackEntry,
+        _function_opt: &ParseTreeStackEntry,
+        _fn: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
+        _argument_list: &ParseTreeStackEntry,
+        _function_body: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -250,12 +231,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 18:
     ///
-    /// ArgumentList: "\(" ArgumentListSuffix;
+    /// FunctionOpt: Effect; // Option<T>::Some
     ///
-    fn argument_list_0(
+    fn function_opt_0(
         &mut self,
-        _l_paren_0: &ParseTreeStackEntry,
-        _argument_list_suffix_1: &ParseTreeStackEntry,
+        _effect: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -263,25 +243,19 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 19:
     ///
-    /// ArgumentListSuffix: "\)";
+    /// FunctionOpt: ; // Option<T>::None
     ///
-    fn argument_list_suffix_0(
-        &mut self,
-        _r_paren_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn function_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 20:
     ///
-    /// ArgumentListSuffix: Identifier ArgumentListList /* Vec */ "\)";
+    /// Effect: "async";
     ///
-    fn argument_list_suffix_1(
+    fn effect(
         &mut self,
-        _identifier_0: &ParseTreeStackEntry,
-        _argument_list_list_1: &ParseTreeStackEntry,
-        _r_paren_2: &ParseTreeStackEntry,
+        _effect: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -289,13 +263,12 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 21:
     ///
-    /// ArgumentListList: "," Identifier ArgumentListList; // Vec<T>::Push
+    /// ArgumentList: "\(" ArgumentListSuffix;
     ///
-    fn argument_list_list_0(
+    fn argument_list(
         &mut self,
-        _comma_0: &ParseTreeStackEntry,
-        _identifier_1: &ParseTreeStackEntry,
-        _argument_list_list_2: &ParseTreeStackEntry,
+        _l_paren: &ParseTreeStackEntry,
+        _argument_list_suffix: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -303,22 +276,25 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 22:
     ///
-    /// ArgumentListList: ; // Vec<T>::New
+    /// ArgumentListSuffix: "\)";
     ///
-    fn argument_list_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn argument_list_suffix_0(
+        &mut self,
+        _r_paren: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 23:
     ///
-    /// FunctionBody: "\{" FunctionBodyList /* Vec */ MaybeReturnWithoutExpr "\}";
+    /// ArgumentListSuffix: Identifier ArgumentListList /* Vec */ "\)";
     ///
-    fn function_body_0(
+    fn argument_list_suffix_1(
         &mut self,
-        _l_brace_0: &ParseTreeStackEntry,
-        _function_body_list_1: &ParseTreeStackEntry,
-        _maybe_return_without_expr_2: &ParseTreeStackEntry,
-        _r_brace_3: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
+        _argument_list_list: &ParseTreeStackEntry,
+        _r_paren: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -326,12 +302,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 24:
     ///
-    /// FunctionBodyList: Expr FunctionBodyList; // Vec<T>::Push
+    /// ArgumentListList: "," Identifier ArgumentListList; // Vec<T>::Push
     ///
-    fn function_body_list_0(
+    fn argument_list_list_0(
         &mut self,
-        _expr_0: &ParseTreeStackEntry,
-        _function_body_list_1: &ParseTreeStackEntry,
+        _comma: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
+        _argument_list_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -339,19 +316,22 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 25:
     ///
-    /// FunctionBodyList: ; // Vec<T>::New
+    /// ArgumentListList: ; // Vec<T>::New
     ///
-    fn function_body_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn argument_list_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 26:
     ///
-    /// Expr: LocalVariable;
+    /// FunctionBody: "\{" FunctionBodyList /* Vec */ MaybeReturnWithoutExpr "\}";
     ///
-    fn expr_0(
+    fn function_body(
         &mut self,
-        _local_variable_0: &ParseTreeStackEntry,
+        _l_brace: &ParseTreeStackEntry,
+        _function_body_list: &ParseTreeStackEntry,
+        _maybe_return_without_expr: &ParseTreeStackEntry,
+        _r_brace: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -359,11 +339,12 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 27:
     ///
-    /// Expr: ReturnWithExpr;
+    /// FunctionBodyList: Expr FunctionBodyList; // Vec<T>::Push
     ///
-    fn expr_1(
+    fn function_body_list_0(
         &mut self,
-        _return_with_expr_0: &ParseTreeStackEntry,
+        _expr: &ParseTreeStackEntry,
+        _function_body_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -371,24 +352,19 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 28:
     ///
-    /// Expr: Expr5;
+    /// FunctionBodyList: ; // Vec<T>::New
     ///
-    fn expr_2(
-        &mut self,
-        _expr5_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn function_body_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 29:
     ///
-    /// ReturnWithExpr: "return" Expr;
+    /// Expr: LocalVariable;
     ///
-    fn return_with_expr_0(
+    fn expr_0(
         &mut self,
-        _return_without_expr_0: &ParseTreeStackEntry,
-        _expr_1: &ParseTreeStackEntry,
+        _local_variable: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -396,11 +372,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 30:
     ///
-    /// ReturnWithoutExpr: "return";
+    /// Expr: ReturnWithExpr;
     ///
-    fn return_without_expr_0(
+    fn expr_1(
         &mut self,
-        _return_without_expr_0: &ParseTreeStackEntry,
+        _return_with_expr: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -408,11 +384,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 31:
     ///
-    /// MaybeReturnWithoutExpr: ReturnWithoutExpr;
+    /// Expr: Expr5;
     ///
-    fn maybe_return_without_expr_0(
+    fn expr_2(
         &mut self,
-        _return_without_expr_0: &ParseTreeStackEntry,
+        _expr5: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -420,20 +396,24 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 32:
     ///
-    /// MaybeReturnWithoutExpr: ;
+    /// ReturnWithExpr: "return" Expr;
     ///
-    fn maybe_return_without_expr_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn return_with_expr(
+        &mut self,
+        _return_without_expr: &ParseTreeStackEntry,
+        _expr: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 33:
     ///
-    /// Expr5: Expr4 Expr5List /* Vec */;
+    /// ReturnWithoutExpr: "return";
     ///
-    fn expr5_0(
+    fn return_without_expr(
         &mut self,
-        _expr4_0: &ParseTreeStackEntry,
-        _expr5_list_1: &ParseTreeStackEntry,
+        _return_without_expr: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -441,13 +421,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 34:
     ///
-    /// Expr5List: Expr5ListGroup Expr4 Expr5List; // Vec<T>::Push
+    /// MaybeReturnWithoutExpr: MaybeReturnWithoutExprOpt /* Option */;
     ///
-    fn expr5_list_0(
+    fn maybe_return_without_expr(
         &mut self,
-        _expr5_list_group_0: &ParseTreeStackEntry,
-        _expr4_1: &ParseTreeStackEntry,
-        _expr5_list_2: &ParseTreeStackEntry,
+        _maybe_return_without_expr_opt: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -455,11 +433,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 35:
     ///
-    /// Expr5ListGroup: "\+=";
+    /// MaybeReturnWithoutExprOpt: ReturnWithoutExpr; // Option<T>::Some
     ///
-    fn expr5_list_group_0(
+    fn maybe_return_without_expr_opt_0(
         &mut self,
-        _plus_equ_0: &ParseTreeStackEntry,
+        _return_without_expr: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -467,23 +445,20 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 36:
     ///
-    /// Expr5ListGroup: "-=";
+    /// MaybeReturnWithoutExprOpt: ; // Option<T>::None
     ///
-    fn expr5_list_group_1(
-        &mut self,
-        _minus_equ_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn maybe_return_without_expr_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 37:
     ///
-    /// Expr5ListGroup: "/=";
+    /// Expr5: Expr4 Expr5List /* Vec */;
     ///
-    fn expr5_list_group_2(
+    fn expr5(
         &mut self,
-        _slash_equ_0: &ParseTreeStackEntry,
+        _expr4: &ParseTreeStackEntry,
+        _expr5_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -491,11 +466,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 38:
     ///
-    /// Expr5ListGroup: "\*=";
+    /// Expr5List: Expr5ListGroup Expr4 Expr5List; // Vec<T>::Push
     ///
-    fn expr5_list_group_3(
+    fn expr5_list_0(
         &mut self,
-        _star_equ_0: &ParseTreeStackEntry,
+        _expr5_list_group: &ParseTreeStackEntry,
+        _expr4: &ParseTreeStackEntry,
+        _expr5_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -503,11 +480,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 39:
     ///
-    /// Expr5ListGroup: ":=";
+    /// Expr5ListGroup: "\+=";
     ///
-    fn expr5_list_group_4(
+    fn expr5_list_group_0(
         &mut self,
-        _colon_equ_0: &ParseTreeStackEntry,
+        _plus_equ: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -515,20 +492,23 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 40:
     ///
-    /// Expr5List: ; // Vec<T>::New
+    /// Expr5ListGroup: "-=";
     ///
-    fn expr5_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn expr5_list_group_1(
+        &mut self,
+        _minus_equ: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 41:
     ///
-    /// Expr4: Expr3 Expr4List /* Vec */;
+    /// Expr5ListGroup: "/=";
     ///
-    fn expr4_0(
+    fn expr5_list_group_2(
         &mut self,
-        _expr3_0: &ParseTreeStackEntry,
-        _expr4_list_1: &ParseTreeStackEntry,
+        _slash_equ: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -536,13 +516,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 42:
     ///
-    /// Expr4List: Expr4ListGroup Expr3 Expr4List; // Vec<T>::Push
+    /// Expr5ListGroup: "\*=";
     ///
-    fn expr4_list_0(
+    fn expr5_list_group_3(
         &mut self,
-        _expr4_list_group_0: &ParseTreeStackEntry,
-        _expr3_1: &ParseTreeStackEntry,
-        _expr4_list_2: &ParseTreeStackEntry,
+        _star_equ: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -550,11 +528,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 43:
     ///
-    /// Expr4ListGroup: "==";
+    /// Expr5ListGroup: ":=";
     ///
-    fn expr4_list_group_0(
+    fn expr5_list_group_4(
         &mut self,
-        _equ_equ_0: &ParseTreeStackEntry,
+        _colon_equ: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -562,23 +540,20 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 44:
     ///
-    /// Expr4ListGroup: "<";
+    /// Expr5List: ; // Vec<T>::New
     ///
-    fn expr4_list_group_1(
-        &mut self,
-        _l_t_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn expr5_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 45:
     ///
-    /// Expr4ListGroup: ">";
+    /// Expr4: Expr3 Expr4List /* Vec */;
     ///
-    fn expr4_list_group_2(
+    fn expr4(
         &mut self,
-        _g_t_0: &ParseTreeStackEntry,
+        _expr3: &ParseTreeStackEntry,
+        _expr4_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -586,20 +561,25 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 46:
     ///
-    /// Expr4List: ; // Vec<T>::New
+    /// Expr4List: Expr4ListGroup Expr3 Expr4List; // Vec<T>::Push
     ///
-    fn expr4_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn expr4_list_0(
+        &mut self,
+        _expr4_list_group: &ParseTreeStackEntry,
+        _expr3: &ParseTreeStackEntry,
+        _expr4_list: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 47:
     ///
-    /// Expr3: Expr2 Expr3List /* Vec */;
+    /// Expr4ListGroup: "==";
     ///
-    fn expr3_0(
+    fn expr4_list_group_0(
         &mut self,
-        _expr2_0: &ParseTreeStackEntry,
-        _expr3_list_1: &ParseTreeStackEntry,
+        _equ_equ: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -607,13 +587,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 48:
     ///
-    /// Expr3List: Expr3ListGroup Expr2 Expr3List; // Vec<T>::Push
+    /// Expr4ListGroup: "<";
     ///
-    fn expr3_list_0(
+    fn expr4_list_group_1(
         &mut self,
-        _expr3_list_group_0: &ParseTreeStackEntry,
-        _expr2_1: &ParseTreeStackEntry,
-        _expr3_list_2: &ParseTreeStackEntry,
+        _l_t: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -621,11 +599,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 49:
     ///
-    /// Expr3ListGroup: "\+";
+    /// Expr4ListGroup: ">";
     ///
-    fn expr3_list_group_0(
+    fn expr4_list_group_2(
         &mut self,
-        _plus_0: &ParseTreeStackEntry,
+        _g_t: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -633,32 +611,34 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 50:
     ///
-    /// Expr3ListGroup: "-";
+    /// Expr4List: ; // Vec<T>::New
     ///
-    fn expr3_list_group_1(
-        &mut self,
-        _minus_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn expr4_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 51:
     ///
-    /// Expr3List: ; // Vec<T>::New
+    /// Expr3: Expr2 Expr3List /* Vec */;
     ///
-    fn expr3_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn expr3(
+        &mut self,
+        _expr2: &ParseTreeStackEntry,
+        _expr3_list: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 52:
     ///
-    /// Expr2: Expr1 Expr2List /* Vec */;
+    /// Expr3List: Expr3ListGroup Expr2 Expr3List; // Vec<T>::Push
     ///
-    fn expr2_0(
+    fn expr3_list_0(
         &mut self,
-        _expr1_0: &ParseTreeStackEntry,
-        _expr2_list_1: &ParseTreeStackEntry,
+        _expr3_list_group: &ParseTreeStackEntry,
+        _expr2: &ParseTreeStackEntry,
+        _expr3_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -666,13 +646,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 53:
     ///
-    /// Expr2List: Expr2ListGroup Expr1 Expr2List; // Vec<T>::Push
+    /// Expr3ListGroup: "\+";
     ///
-    fn expr2_list_0(
+    fn expr3_list_group_0(
         &mut self,
-        _expr2_list_group_0: &ParseTreeStackEntry,
-        _expr1_1: &ParseTreeStackEntry,
-        _expr2_list_2: &ParseTreeStackEntry,
+        _plus: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -680,11 +658,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 54:
     ///
-    /// Expr2ListGroup: "/";
+    /// Expr3ListGroup: "-";
     ///
-    fn expr2_list_group_0(
+    fn expr3_list_group_1(
         &mut self,
-        _slash_0: &ParseTreeStackEntry,
+        _minus: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -692,32 +670,34 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 55:
     ///
-    /// Expr2ListGroup: "\*";
+    /// Expr3List: ; // Vec<T>::New
     ///
-    fn expr2_list_group_1(
-        &mut self,
-        _star_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn expr3_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 56:
     ///
-    /// Expr2List: ; // Vec<T>::New
+    /// Expr2: Expr1 Expr2List /* Vec */;
     ///
-    fn expr2_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn expr2(
+        &mut self,
+        _expr1: &ParseTreeStackEntry,
+        _expr2_list: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 57:
     ///
-    /// Expr1: Expr0 Expr1List /* Vec */;
+    /// Expr2List: Expr2ListGroup Expr1 Expr2List; // Vec<T>::Push
     ///
-    fn expr1_0(
+    fn expr2_list_0(
         &mut self,
-        _expr0_0: &ParseTreeStackEntry,
-        _expr1_list_1: &ParseTreeStackEntry,
+        _expr2_list_group: &ParseTreeStackEntry,
+        _expr1: &ParseTreeStackEntry,
+        _expr2_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -725,12 +705,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 58:
     ///
-    /// Expr1List: Expr1ListGroup Expr1List; // Vec<T>::Push
+    /// Expr2ListGroup: "/";
     ///
-    fn expr1_list_0(
+    fn expr2_list_group_0(
         &mut self,
-        _expr1_list_group_0: &ParseTreeStackEntry,
-        _expr1_list_1: &ParseTreeStackEntry,
+        _slash: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -738,11 +717,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 59:
     ///
-    /// Expr1ListGroup: DotExpr;
+    /// Expr2ListGroup: "\*";
     ///
-    fn expr1_list_group_0(
+    fn expr2_list_group_1(
         &mut self,
-        _dot_expr_0: &ParseTreeStackEntry,
+        _star: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -750,32 +729,33 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 60:
     ///
-    /// Expr1ListGroup: CallArgumentList;
+    /// Expr2List: ; // Vec<T>::New
     ///
-    fn expr1_list_group_1(
-        &mut self,
-        _call_argument_list_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn expr2_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 61:
     ///
-    /// Expr1List: ; // Vec<T>::New
+    /// Expr1: Expr0 Expr1List /* Vec */;
     ///
-    fn expr1_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn expr1(
+        &mut self,
+        _expr0: &ParseTreeStackEntry,
+        _expr1_list: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 62:
     ///
-    /// DotExpr: "\." DotSuffix;
+    /// Expr1List: Expr1ListGroup Expr1List; // Vec<T>::Push
     ///
-    fn dot_expr_0(
+    fn expr1_list_0(
         &mut self,
-        _dot_0: &ParseTreeStackEntry,
-        _dot_suffix_1: &ParseTreeStackEntry,
+        _expr1_list_group: &ParseTreeStackEntry,
+        _expr1_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -783,11 +763,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 63:
     ///
-    /// DotSuffix: "await";
+    /// Expr1ListGroup: DotExpr;
     ///
-    fn dot_suffix_0(
+    fn expr1_list_group_0(
         &mut self,
-        _await_0: &ParseTreeStackEntry,
+        _dot_expr: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -795,11 +775,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 64:
     ///
-    /// DotSuffix: "share";
+    /// Expr1ListGroup: CallArgumentList;
     ///
-    fn dot_suffix_1(
+    fn expr1_list_group_1(
         &mut self,
-        _share_0: &ParseTreeStackEntry,
+        _call_argument_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -807,23 +787,20 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 65:
     ///
-    /// DotSuffix: "give";
+    /// Expr1List: ; // Vec<T>::New
     ///
-    fn dot_suffix_2(
-        &mut self,
-        _give_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn expr1_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 66:
     ///
-    /// DotSuffix: "lease";
+    /// DotExpr: "\." DotSuffix;
     ///
-    fn dot_suffix_3(
+    fn dot_expr(
         &mut self,
-        _lease_0: &ParseTreeStackEntry,
+        _dot: &ParseTreeStackEntry,
+        _dot_suffix: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -831,11 +808,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 67:
     ///
-    /// DotSuffix: Identifier;
+    /// DotSuffix: "await";
     ///
-    fn dot_suffix_4(
+    fn dot_suffix_0(
         &mut self,
-        _identifier_0: &ParseTreeStackEntry,
+        _await: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -843,12 +820,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 68:
     ///
-    /// CallArgumentList: "\(" CallArgumentListSuffix;
+    /// DotSuffix: "share";
     ///
-    fn call_argument_list_0(
+    fn dot_suffix_1(
         &mut self,
-        _l_paren_0: &ParseTreeStackEntry,
-        _call_argument_list_suffix_1: &ParseTreeStackEntry,
+        _share: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -856,11 +832,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 69:
     ///
-    /// CallArgumentListSuffix: "\)";
+    /// DotSuffix: "give";
     ///
-    fn call_argument_list_suffix_0(
+    fn dot_suffix_2(
         &mut self,
-        _r_paren_0: &ParseTreeStackEntry,
+        _give: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -868,14 +844,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 70:
     ///
-    /// CallArgumentListSuffix: CallArgument CallArgumentListList /* Vec */ MaybeTrailingComma "\)";
+    /// DotSuffix: "lease";
     ///
-    fn call_argument_list_suffix_1(
+    fn dot_suffix_3(
         &mut self,
-        _call_argument_0: &ParseTreeStackEntry,
-        _call_argument_list_list_1: &ParseTreeStackEntry,
-        _maybe_trailing_comma_2: &ParseTreeStackEntry,
-        _r_paren_3: &ParseTreeStackEntry,
+        _lease: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -883,13 +856,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 71:
     ///
-    /// CallArgumentListList: "," CallArgument CallArgumentListList; // Vec<T>::Push
+    /// DotSuffix: Identifier;
     ///
-    fn call_argument_list_list_0(
+    fn dot_suffix_4(
         &mut self,
-        _comma_0: &ParseTreeStackEntry,
-        _call_argument_1: &ParseTreeStackEntry,
-        _call_argument_list_list_2: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -897,19 +868,24 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 72:
     ///
-    /// CallArgumentListList: ; // Vec<T>::New
+    /// CallArgumentList: "\(" CallArgumentListSuffix;
     ///
-    fn call_argument_list_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn call_argument_list(
+        &mut self,
+        _l_paren: &ParseTreeStackEntry,
+        _call_argument_list_suffix: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 73:
     ///
-    /// MaybeTrailingComma: ",";
+    /// CallArgumentListSuffix: "\)";
     ///
-    fn maybe_trailing_comma_0(
+    fn call_argument_list_suffix_0(
         &mut self,
-        _comma_0: &ParseTreeStackEntry,
+        _r_paren: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -917,21 +893,28 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 74:
     ///
-    /// MaybeTrailingComma: ;
+    /// CallArgumentListSuffix: CallArgument CallArgumentListList /* Vec */ MaybeTrailingComma "\)";
     ///
-    fn maybe_trailing_comma_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn call_argument_list_suffix_1(
+        &mut self,
+        _call_argument: &ParseTreeStackEntry,
+        _call_argument_list_list: &ParseTreeStackEntry,
+        _maybe_trailing_comma: &ParseTreeStackEntry,
+        _r_paren: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 75:
     ///
-    /// CallArgument: Identifier ":" Expr;
+    /// CallArgumentListList: "," CallArgument CallArgumentListList; // Vec<T>::Push
     ///
-    fn call_argument_0(
+    fn call_argument_list_list_0(
         &mut self,
-        _identifier_0: &ParseTreeStackEntry,
-        _colon_1: &ParseTreeStackEntry,
-        _expr_2: &ParseTreeStackEntry,
+        _comma: &ParseTreeStackEntry,
+        _call_argument: &ParseTreeStackEntry,
+        _call_argument_list_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -939,23 +922,19 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 76:
     ///
-    /// CallArgument: Expr;
+    /// CallArgumentListList: ; // Vec<T>::New
     ///
-    fn call_argument_1(
-        &mut self,
-        _expr_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn call_argument_list_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 77:
     ///
-    /// Expr0: Identifier;
+    /// MaybeTrailingComma: MaybeTrailingCommaOpt /* Option */;
     ///
-    fn expr0_0(
+    fn maybe_trailing_comma(
         &mut self,
-        _identifier_0: &ParseTreeStackEntry,
+        _maybe_trailing_comma_opt: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -963,11 +942,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 78:
     ///
-    /// Expr0: BooleanLiteral;
+    /// MaybeTrailingCommaOpt: ","; // Option<T>::Some
     ///
-    fn expr0_1(
+    fn maybe_trailing_comma_opt_0(
         &mut self,
-        _boolean_literal_0: &ParseTreeStackEntry,
+        _comma: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -975,23 +954,20 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 79:
     ///
-    /// Expr0: FloatLiteral;
+    /// MaybeTrailingCommaOpt: ; // Option<T>::None
     ///
-    fn expr0_2(
-        &mut self,
-        _float_literal_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn maybe_trailing_comma_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 80:
     ///
-    /// Expr0: IntegerLiteral;
+    /// CallArgument: CallArgumentOpt /* Option */ Expr;
     ///
-    fn expr0_3(
+    fn call_argument(
         &mut self,
-        _integer_literal_0: &ParseTreeStackEntry,
+        _call_argument_opt: &ParseTreeStackEntry,
+        _expr: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -999,11 +975,12 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 81:
     ///
-    /// Expr0: StringLiteral;
+    /// CallArgumentOpt: Identifier ":"; // Option<T>::Some
     ///
-    fn expr0_4(
+    fn call_argument_opt_0(
         &mut self,
-        _string_literal_0: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
+        _colon: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1011,23 +988,19 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 82:
     ///
-    /// Expr0: BlockExpr;
+    /// CallArgumentOpt: ; // Option<T>::None
     ///
-    fn expr0_5(
-        &mut self,
-        _block_expr_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn call_argument_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 83:
     ///
-    /// Expr0: AtomicBlock;
+    /// Expr0: Identifier;
     ///
-    fn expr0_6(
+    fn expr0_0(
         &mut self,
-        _atomic_block_0: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1035,11 +1008,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 84:
     ///
-    /// Expr0: IfExpr;
+    /// Expr0: BooleanLiteral;
     ///
-    fn expr0_7(
+    fn expr0_1(
         &mut self,
-        _if_expr_0: &ParseTreeStackEntry,
+        _boolean_literal: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1047,11 +1020,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 85:
     ///
-    /// Expr0: Loop;
+    /// Expr0: FloatLiteral;
     ///
-    fn expr0_8(
+    fn expr0_2(
         &mut self,
-        _loop_0: &ParseTreeStackEntry,
+        _float_literal: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1059,11 +1032,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 86:
     ///
-    /// Expr0: While;
+    /// Expr0: IntegerLiteral;
     ///
-    fn expr0_9(
+    fn expr0_3(
         &mut self,
-        _while_0: &ParseTreeStackEntry,
+        _integer_literal: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1071,11 +1044,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 87:
     ///
-    /// Expr0: Tuple;
+    /// Expr0: StringLiteral;
     ///
-    fn expr0_10(
+    fn expr0_4(
         &mut self,
-        _tuple_0: &ParseTreeStackEntry,
+        _string_literal: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1083,11 +1056,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 88:
     ///
-    /// BooleanLiteral: "true";
+    /// Expr0: BlockExpr;
     ///
-    fn boolean_literal_0(
+    fn expr0_5(
         &mut self,
-        _true_0: &ParseTreeStackEntry,
+        _block_expr: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1095,11 +1068,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 89:
     ///
-    /// BooleanLiteral: "false";
+    /// Expr0: AtomicBlock;
     ///
-    fn boolean_literal_1(
+    fn expr0_6(
         &mut self,
-        _false_0: &ParseTreeStackEntry,
+        _atomic_block: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1107,11 +1080,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 90:
     ///
-    /// Identifier: "[a-z|A-Z_][a-z|A-Z|0-9_]*";
+    /// Expr0: IfExpr;
     ///
-    fn identifier_0(
+    fn expr0_7(
         &mut self,
-        _identifier_0: &ParseTreeStackEntry,
+        _if_expr: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1119,11 +1092,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 91:
     ///
-    /// FloatLiteral: "[0-9][0-9_]*\.[0-9][0-9_]*";
+    /// Expr0: Loop;
     ///
-    fn float_literal_0(
+    fn expr0_8(
         &mut self,
-        _float_literal_0: &ParseTreeStackEntry,
+        _loop: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1131,11 +1104,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 92:
     ///
-    /// IntegerLiteral: "[0-9][0-9_]*";
+    /// Expr0: While;
     ///
-    fn integer_literal_0(
+    fn expr0_9(
         &mut self,
-        _integer_literal_0: &ParseTreeStackEntry,
+        _while: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1143,11 +1116,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 93:
     ///
-    /// StringLiteral: "\u{0022}(?s:[^\u{0022}]*)\u{0022}";
+    /// Expr0: Tuple;
     ///
-    fn string_literal_0(
+    fn expr0_10(
         &mut self,
-        _string_literal_0: &ParseTreeStackEntry,
+        _tuple: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1155,14 +1128,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 94:
     ///
-    /// BlockExpr: "\{" BlockExprList /* Vec */ MaybeReturnWithoutExpr "\}";
+    /// BooleanLiteral: "true";
     ///
-    fn block_expr_0(
+    fn boolean_literal_0(
         &mut self,
-        _l_brace_0: &ParseTreeStackEntry,
-        _block_expr_list_1: &ParseTreeStackEntry,
-        _maybe_return_without_expr_2: &ParseTreeStackEntry,
-        _r_brace_3: &ParseTreeStackEntry,
+        _true: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1170,12 +1140,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 95:
     ///
-    /// BlockExprList: Expr BlockExprList; // Vec<T>::Push
+    /// BooleanLiteral: "false";
     ///
-    fn block_expr_list_0(
+    fn boolean_literal_1(
         &mut self,
-        _expr_0: &ParseTreeStackEntry,
-        _block_expr_list_1: &ParseTreeStackEntry,
+        _false: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1183,20 +1152,23 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 96:
     ///
-    /// BlockExprList: ; // Vec<T>::New
+    /// Identifier: "[a-z|A-Z_][a-z|A-Z|0-9_]*";
     ///
-    fn block_expr_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn identifier(
+        &mut self,
+        _identifier: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 97:
     ///
-    /// AtomicBlock: "atomic" BlockExpr;
+    /// FloatLiteral: "[0-9][0-9_]*\.[0-9][0-9_]*";
     ///
-    fn atomic_block_0(
+    fn float_literal(
         &mut self,
-        _storage_mode_0: &ParseTreeStackEntry,
-        _block_expr_1: &ParseTreeStackEntry,
+        _float_literal: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1204,15 +1176,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 98:
     ///
-    /// IfExpr: "if" Condition "\{" IfExprList /* Vec */ IfExprGroup;
+    /// IntegerLiteral: "[0-9][0-9_]*";
     ///
-    fn if_expr_0(
+    fn integer_literal(
         &mut self,
-        _if_0: &ParseTreeStackEntry,
-        _condition_1: &ParseTreeStackEntry,
-        _l_brace_2: &ParseTreeStackEntry,
-        _if_expr_list_3: &ParseTreeStackEntry,
-        _if_expr_group_4: &ParseTreeStackEntry,
+        _integer_literal: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1220,12 +1188,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 99:
     ///
-    /// IfExprGroup: "\}" IfExprGroupSuffix;
+    /// StringLiteral: "\u{0022}(?s:[^\u{0022}]*)\u{0022}";
     ///
-    fn if_expr_group_0(
+    fn string_literal(
         &mut self,
-        _r_brace_0: &ParseTreeStackEntry,
-        _if_expr_group_suffix_1: &ParseTreeStackEntry,
+        _string_literal: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1233,22 +1200,27 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 100:
     ///
-    /// IfExprGroupSuffix: ;
+    /// BlockExpr: "\{" BlockExprList /* Vec */ MaybeReturnWithoutExpr "\}";
     ///
-    fn if_expr_group_suffix_0(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn block_expr(
+        &mut self,
+        _l_brace: &ParseTreeStackEntry,
+        _block_expr_list: &ParseTreeStackEntry,
+        _maybe_return_without_expr: &ParseTreeStackEntry,
+        _r_brace: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 101:
     ///
-    /// IfExprGroupSuffix: "else" "\{" IfExprGroupList /* Vec */ "\}";
+    /// BlockExprList: Expr BlockExprList; // Vec<T>::Push
     ///
-    fn if_expr_group_suffix_1(
+    fn block_expr_list_0(
         &mut self,
-        _else_0: &ParseTreeStackEntry,
-        _l_brace_1: &ParseTreeStackEntry,
-        _if_expr_group_list_2: &ParseTreeStackEntry,
-        _r_brace_3: &ParseTreeStackEntry,
+        _expr: &ParseTreeStackEntry,
+        _block_expr_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1256,33 +1228,36 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 102:
     ///
-    /// IfExprGroupList: Expr IfExprGroupList; // Vec<T>::Push
+    /// BlockExprList: ; // Vec<T>::New
     ///
-    fn if_expr_group_list_0(
-        &mut self,
-        _expr_0: &ParseTreeStackEntry,
-        _if_expr_group_list_1: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn block_expr_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 103:
     ///
-    /// IfExprGroupList: ; // Vec<T>::New
+    /// AtomicBlock: "atomic" BlockExpr;
     ///
-    fn if_expr_group_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn atomic_block(
+        &mut self,
+        _storage_mode: &ParseTreeStackEntry,
+        _block_expr: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 104:
     ///
-    /// IfExprList: Expr IfExprList; // Vec<T>::Push
+    /// IfExpr: "if" Condition "\{" IfExprList /* Vec */ IfExprGroup;
     ///
-    fn if_expr_list_0(
+    fn if_expr(
         &mut self,
-        _expr_0: &ParseTreeStackEntry,
-        _if_expr_list_1: &ParseTreeStackEntry,
+        _if: &ParseTreeStackEntry,
+        _condition: &ParseTreeStackEntry,
+        _l_brace: &ParseTreeStackEntry,
+        _if_expr_list: &ParseTreeStackEntry,
+        _if_expr_group: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1290,32 +1265,35 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 105:
     ///
-    /// IfExprList: ; // Vec<T>::New
+    /// IfExprGroup: "\}" IfExprGroupSuffix;
     ///
-    fn if_expr_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 106:
-    ///
-    /// Condition: Expr;
-    ///
-    fn condition_0(
+    fn if_expr_group(
         &mut self,
-        _expr_0: &ParseTreeStackEntry,
+        _r_brace: &ParseTreeStackEntry,
+        _if_expr_group_suffix: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
     }
 
+    /// Semantic action for production 106:
+    ///
+    /// IfExprGroupSuffix: ;
+    ///
+    fn if_expr_group_suffix_0(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+        Ok(())
+    }
+
     /// Semantic action for production 107:
     ///
-    /// Loop: "loop" BlockExpr;
+    /// IfExprGroupSuffix: "else" "\{" IfExprGroupList /* Vec */ "\}";
     ///
-    fn loop_0(
+    fn if_expr_group_suffix_1(
         &mut self,
-        _loop_0: &ParseTreeStackEntry,
-        _block_expr_1: &ParseTreeStackEntry,
+        _else: &ParseTreeStackEntry,
+        _l_brace: &ParseTreeStackEntry,
+        _if_expr_group_list: &ParseTreeStackEntry,
+        _r_brace: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1323,13 +1301,12 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 108:
     ///
-    /// While: "while" Condition BlockExpr;
+    /// IfExprGroupList: Expr IfExprGroupList; // Vec<T>::Push
     ///
-    fn while_0(
+    fn if_expr_group_list_0(
         &mut self,
-        _while_0: &ParseTreeStackEntry,
-        _condition_1: &ParseTreeStackEntry,
-        _block_expr_2: &ParseTreeStackEntry,
+        _expr: &ParseTreeStackEntry,
+        _if_expr_group_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1337,26 +1314,20 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 109:
     ///
-    /// Tuple: "tuple";
+    /// IfExprGroupList: ; // Vec<T>::New
     ///
-    fn tuple_0(
-        &mut self,
-        _tuple_0: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn if_expr_group_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 110:
     ///
-    /// LocalVariable: StorageMode Identifier "=" Expr;
+    /// IfExprList: Expr IfExprList; // Vec<T>::Push
     ///
-    fn local_variable_0(
+    fn if_expr_list_0(
         &mut self,
-        _storage_mode_0: &ParseTreeStackEntry,
-        _identifier_1: &ParseTreeStackEntry,
-        _equ_2: &ParseTreeStackEntry,
-        _expr_3: &ParseTreeStackEntry,
+        _expr: &ParseTreeStackEntry,
+        _if_expr_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -1364,27 +1335,100 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 111:
     ///
-    /// LocalVariable: Identifier "=" Expr;
+    /// IfExprList: ; // Vec<T>::New
     ///
-    fn local_variable_1(
+    fn if_expr_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+        Ok(())
+    }
+
+    /// Semantic action for production 112:
+    ///
+    /// Condition: Expr;
+    ///
+    fn condition(
         &mut self,
-        _identifier_0: &ParseTreeStackEntry,
-        _equ_1: &ParseTreeStackEntry,
-        _expr_2: &ParseTreeStackEntry,
+        _expr: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
+        Ok(())
+    }
+
+    /// Semantic action for production 113:
+    ///
+    /// Loop: "loop" BlockExpr;
+    ///
+    fn r#loop(
+        &mut self,
+        _loop: &ParseTreeStackEntry,
+        _block_expr: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
+        Ok(())
+    }
+
+    /// Semantic action for production 114:
+    ///
+    /// While: "while" Condition BlockExpr;
+    ///
+    fn r#while(
+        &mut self,
+        _while: &ParseTreeStackEntry,
+        _condition: &ParseTreeStackEntry,
+        _block_expr: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
+        Ok(())
+    }
+
+    /// Semantic action for production 115:
+    ///
+    /// Tuple: "tuple";
+    ///
+    fn tuple(
+        &mut self,
+        _tuple: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
+        Ok(())
+    }
+
+    /// Semantic action for production 116:
+    ///
+    /// LocalVariable: LocalVariableOpt /* Option */ Identifier "=" Expr;
+    ///
+    fn local_variable(
+        &mut self,
+        _local_variable_opt: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
+        _equ: &ParseTreeStackEntry,
+        _expr: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
+        Ok(())
+    }
+
+    /// Semantic action for production 117:
+    ///
+    /// LocalVariableOpt: StorageMode; // Option<T>::Some
+    ///
+    fn local_variable_opt_0(
+        &mut self,
+        _storage_mode: &ParseTreeStackEntry,
+        _parse_tree: &Tree<ParseTreeType>,
+    ) -> Result<()> {
+        Ok(())
+    }
+
+    /// Semantic action for production 118:
+    ///
+    /// LocalVariableOpt: ; // Option<T>::None
+    ///
+    fn local_variable_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 }
 
 impl UserActionsTrait<'_> for Grammar {
-    ///
-    /// Initialize the user with additional information.
-    /// This function is called by the parser before parsing starts.
-    /// It is used to transport necessary data from parser to user.
-    ///
-    fn init(&mut self, _file_name: &Path) {}
-
     ///
     /// This function is implemented automatically for the user's item Grammar.
     ///
@@ -1395,22 +1439,24 @@ impl UserActionsTrait<'_> for Grammar {
         parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         match prod_num {
-            0 => self.items_0(&children[0], parse_tree),
+            0 => self.items(&children[0], parse_tree),
             1 => self.items_list_0(&children[0], &children[1], parse_tree),
             2 => self.items_list_1(parse_tree),
             3 => self.item_0(&children[0], parse_tree),
             4 => self.item_1(&children[0], parse_tree),
-            5 => self.class_0(&children[0], &children[1], &children[2], parse_tree),
-            6 => self.field_list_0(&children[0], &children[1], parse_tree),
+            5 => self.class(&children[0], &children[1], &children[2], parse_tree),
+            6 => self.field_list(&children[0], &children[1], parse_tree),
             7 => self.field_list_suffix_0(&children[0], parse_tree),
             8 => self.field_list_suffix_1(&children[0], &children[1], &children[2], parse_tree),
             9 => self.field_list_list_0(&children[0], &children[1], &children[2], parse_tree),
-            10 => self.field_list_list_1(&children[0], &children[1], parse_tree),
-            11 => self.field_list_list_2(parse_tree),
-            12 => self.field_0(&children[0], &children[1], parse_tree),
-            13 => self.field_1(&children[0], parse_tree),
-            14 => self.storage_mode_0(&children[0], parse_tree),
-            15 => self.function_0(
+            10 => self.field_list_list_1(parse_tree),
+            11 => self.field_list_opt_0(&children[0], parse_tree),
+            12 => self.field_list_opt_1(parse_tree),
+            13 => self.field(&children[0], &children[1], parse_tree),
+            14 => self.field_opt_0(&children[0], parse_tree),
+            15 => self.field_opt_1(parse_tree),
+            16 => self.storage_mode(&children[0], parse_tree),
+            17 => self.function(
                 &children[0],
                 &children[1],
                 &children[2],
@@ -1418,115 +1464,113 @@ impl UserActionsTrait<'_> for Grammar {
                 &children[4],
                 parse_tree,
             ),
-            16 => self.function_1(
+            18 => self.function_opt_0(&children[0], parse_tree),
+            19 => self.function_opt_1(parse_tree),
+            20 => self.effect(&children[0], parse_tree),
+            21 => self.argument_list(&children[0], &children[1], parse_tree),
+            22 => self.argument_list_suffix_0(&children[0], parse_tree),
+            23 => self.argument_list_suffix_1(&children[0], &children[1], &children[2], parse_tree),
+            24 => self.argument_list_list_0(&children[0], &children[1], &children[2], parse_tree),
+            25 => self.argument_list_list_1(parse_tree),
+            26 => self.function_body(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            17 => self.effect_0(&children[0], parse_tree),
-            18 => self.argument_list_0(&children[0], &children[1], parse_tree),
-            19 => self.argument_list_suffix_0(&children[0], parse_tree),
-            20 => self.argument_list_suffix_1(&children[0], &children[1], &children[2], parse_tree),
-            21 => self.argument_list_list_0(&children[0], &children[1], &children[2], parse_tree),
-            22 => self.argument_list_list_1(parse_tree),
-            23 => self.function_body_0(
+            27 => self.function_body_list_0(&children[0], &children[1], parse_tree),
+            28 => self.function_body_list_1(parse_tree),
+            29 => self.expr_0(&children[0], parse_tree),
+            30 => self.expr_1(&children[0], parse_tree),
+            31 => self.expr_2(&children[0], parse_tree),
+            32 => self.return_with_expr(&children[0], &children[1], parse_tree),
+            33 => self.return_without_expr(&children[0], parse_tree),
+            34 => self.maybe_return_without_expr(&children[0], parse_tree),
+            35 => self.maybe_return_without_expr_opt_0(&children[0], parse_tree),
+            36 => self.maybe_return_without_expr_opt_1(parse_tree),
+            37 => self.expr5(&children[0], &children[1], parse_tree),
+            38 => self.expr5_list_0(&children[0], &children[1], &children[2], parse_tree),
+            39 => self.expr5_list_group_0(&children[0], parse_tree),
+            40 => self.expr5_list_group_1(&children[0], parse_tree),
+            41 => self.expr5_list_group_2(&children[0], parse_tree),
+            42 => self.expr5_list_group_3(&children[0], parse_tree),
+            43 => self.expr5_list_group_4(&children[0], parse_tree),
+            44 => self.expr5_list_1(parse_tree),
+            45 => self.expr4(&children[0], &children[1], parse_tree),
+            46 => self.expr4_list_0(&children[0], &children[1], &children[2], parse_tree),
+            47 => self.expr4_list_group_0(&children[0], parse_tree),
+            48 => self.expr4_list_group_1(&children[0], parse_tree),
+            49 => self.expr4_list_group_2(&children[0], parse_tree),
+            50 => self.expr4_list_1(parse_tree),
+            51 => self.expr3(&children[0], &children[1], parse_tree),
+            52 => self.expr3_list_0(&children[0], &children[1], &children[2], parse_tree),
+            53 => self.expr3_list_group_0(&children[0], parse_tree),
+            54 => self.expr3_list_group_1(&children[0], parse_tree),
+            55 => self.expr3_list_1(parse_tree),
+            56 => self.expr2(&children[0], &children[1], parse_tree),
+            57 => self.expr2_list_0(&children[0], &children[1], &children[2], parse_tree),
+            58 => self.expr2_list_group_0(&children[0], parse_tree),
+            59 => self.expr2_list_group_1(&children[0], parse_tree),
+            60 => self.expr2_list_1(parse_tree),
+            61 => self.expr1(&children[0], &children[1], parse_tree),
+            62 => self.expr1_list_0(&children[0], &children[1], parse_tree),
+            63 => self.expr1_list_group_0(&children[0], parse_tree),
+            64 => self.expr1_list_group_1(&children[0], parse_tree),
+            65 => self.expr1_list_1(parse_tree),
+            66 => self.dot_expr(&children[0], &children[1], parse_tree),
+            67 => self.dot_suffix_0(&children[0], parse_tree),
+            68 => self.dot_suffix_1(&children[0], parse_tree),
+            69 => self.dot_suffix_2(&children[0], parse_tree),
+            70 => self.dot_suffix_3(&children[0], parse_tree),
+            71 => self.dot_suffix_4(&children[0], parse_tree),
+            72 => self.call_argument_list(&children[0], &children[1], parse_tree),
+            73 => self.call_argument_list_suffix_0(&children[0], parse_tree),
+            74 => self.call_argument_list_suffix_1(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            24 => self.function_body_list_0(&children[0], &children[1], parse_tree),
-            25 => self.function_body_list_1(parse_tree),
-            26 => self.expr_0(&children[0], parse_tree),
-            27 => self.expr_1(&children[0], parse_tree),
-            28 => self.expr_2(&children[0], parse_tree),
-            29 => self.return_with_expr_0(&children[0], &children[1], parse_tree),
-            30 => self.return_without_expr_0(&children[0], parse_tree),
-            31 => self.maybe_return_without_expr_0(&children[0], parse_tree),
-            32 => self.maybe_return_without_expr_1(parse_tree),
-            33 => self.expr5_0(&children[0], &children[1], parse_tree),
-            34 => self.expr5_list_0(&children[0], &children[1], &children[2], parse_tree),
-            35 => self.expr5_list_group_0(&children[0], parse_tree),
-            36 => self.expr5_list_group_1(&children[0], parse_tree),
-            37 => self.expr5_list_group_2(&children[0], parse_tree),
-            38 => self.expr5_list_group_3(&children[0], parse_tree),
-            39 => self.expr5_list_group_4(&children[0], parse_tree),
-            40 => self.expr5_list_1(parse_tree),
-            41 => self.expr4_0(&children[0], &children[1], parse_tree),
-            42 => self.expr4_list_0(&children[0], &children[1], &children[2], parse_tree),
-            43 => self.expr4_list_group_0(&children[0], parse_tree),
-            44 => self.expr4_list_group_1(&children[0], parse_tree),
-            45 => self.expr4_list_group_2(&children[0], parse_tree),
-            46 => self.expr4_list_1(parse_tree),
-            47 => self.expr3_0(&children[0], &children[1], parse_tree),
-            48 => self.expr3_list_0(&children[0], &children[1], &children[2], parse_tree),
-            49 => self.expr3_list_group_0(&children[0], parse_tree),
-            50 => self.expr3_list_group_1(&children[0], parse_tree),
-            51 => self.expr3_list_1(parse_tree),
-            52 => self.expr2_0(&children[0], &children[1], parse_tree),
-            53 => self.expr2_list_0(&children[0], &children[1], &children[2], parse_tree),
-            54 => self.expr2_list_group_0(&children[0], parse_tree),
-            55 => self.expr2_list_group_1(&children[0], parse_tree),
-            56 => self.expr2_list_1(parse_tree),
-            57 => self.expr1_0(&children[0], &children[1], parse_tree),
-            58 => self.expr1_list_0(&children[0], &children[1], parse_tree),
-            59 => self.expr1_list_group_0(&children[0], parse_tree),
-            60 => self.expr1_list_group_1(&children[0], parse_tree),
-            61 => self.expr1_list_1(parse_tree),
-            62 => self.dot_expr_0(&children[0], &children[1], parse_tree),
-            63 => self.dot_suffix_0(&children[0], parse_tree),
-            64 => self.dot_suffix_1(&children[0], parse_tree),
-            65 => self.dot_suffix_2(&children[0], parse_tree),
-            66 => self.dot_suffix_3(&children[0], parse_tree),
-            67 => self.dot_suffix_4(&children[0], parse_tree),
-            68 => self.call_argument_list_0(&children[0], &children[1], parse_tree),
-            69 => self.call_argument_list_suffix_0(&children[0], parse_tree),
-            70 => self.call_argument_list_suffix_1(
-                &children[0],
-                &children[1],
-                &children[2],
-                &children[3],
-                parse_tree,
-            ),
-            71 => {
+            75 => {
                 self.call_argument_list_list_0(&children[0], &children[1], &children[2], parse_tree)
             }
-            72 => self.call_argument_list_list_1(parse_tree),
-            73 => self.maybe_trailing_comma_0(&children[0], parse_tree),
-            74 => self.maybe_trailing_comma_1(parse_tree),
-            75 => self.call_argument_0(&children[0], &children[1], &children[2], parse_tree),
-            76 => self.call_argument_1(&children[0], parse_tree),
-            77 => self.expr0_0(&children[0], parse_tree),
-            78 => self.expr0_1(&children[0], parse_tree),
-            79 => self.expr0_2(&children[0], parse_tree),
-            80 => self.expr0_3(&children[0], parse_tree),
-            81 => self.expr0_4(&children[0], parse_tree),
-            82 => self.expr0_5(&children[0], parse_tree),
-            83 => self.expr0_6(&children[0], parse_tree),
-            84 => self.expr0_7(&children[0], parse_tree),
-            85 => self.expr0_8(&children[0], parse_tree),
-            86 => self.expr0_9(&children[0], parse_tree),
-            87 => self.expr0_10(&children[0], parse_tree),
-            88 => self.boolean_literal_0(&children[0], parse_tree),
-            89 => self.boolean_literal_1(&children[0], parse_tree),
-            90 => self.identifier_0(&children[0], parse_tree),
-            91 => self.float_literal_0(&children[0], parse_tree),
-            92 => self.integer_literal_0(&children[0], parse_tree),
-            93 => self.string_literal_0(&children[0], parse_tree),
-            94 => self.block_expr_0(
+            76 => self.call_argument_list_list_1(parse_tree),
+            77 => self.maybe_trailing_comma(&children[0], parse_tree),
+            78 => self.maybe_trailing_comma_opt_0(&children[0], parse_tree),
+            79 => self.maybe_trailing_comma_opt_1(parse_tree),
+            80 => self.call_argument(&children[0], &children[1], parse_tree),
+            81 => self.call_argument_opt_0(&children[0], &children[1], parse_tree),
+            82 => self.call_argument_opt_1(parse_tree),
+            83 => self.expr0_0(&children[0], parse_tree),
+            84 => self.expr0_1(&children[0], parse_tree),
+            85 => self.expr0_2(&children[0], parse_tree),
+            86 => self.expr0_3(&children[0], parse_tree),
+            87 => self.expr0_4(&children[0], parse_tree),
+            88 => self.expr0_5(&children[0], parse_tree),
+            89 => self.expr0_6(&children[0], parse_tree),
+            90 => self.expr0_7(&children[0], parse_tree),
+            91 => self.expr0_8(&children[0], parse_tree),
+            92 => self.expr0_9(&children[0], parse_tree),
+            93 => self.expr0_10(&children[0], parse_tree),
+            94 => self.boolean_literal_0(&children[0], parse_tree),
+            95 => self.boolean_literal_1(&children[0], parse_tree),
+            96 => self.identifier(&children[0], parse_tree),
+            97 => self.float_literal(&children[0], parse_tree),
+            98 => self.integer_literal(&children[0], parse_tree),
+            99 => self.string_literal(&children[0], parse_tree),
+            100 => self.block_expr(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            95 => self.block_expr_list_0(&children[0], &children[1], parse_tree),
-            96 => self.block_expr_list_1(parse_tree),
-            97 => self.atomic_block_0(&children[0], &children[1], parse_tree),
-            98 => self.if_expr_0(
+            101 => self.block_expr_list_0(&children[0], &children[1], parse_tree),
+            102 => self.block_expr_list_1(parse_tree),
+            103 => self.atomic_block(&children[0], &children[1], parse_tree),
+            104 => self.if_expr(
                 &children[0],
                 &children[1],
                 &children[2],
@@ -1534,31 +1578,32 @@ impl UserActionsTrait<'_> for Grammar {
                 &children[4],
                 parse_tree,
             ),
-            99 => self.if_expr_group_0(&children[0], &children[1], parse_tree),
-            100 => self.if_expr_group_suffix_0(parse_tree),
-            101 => self.if_expr_group_suffix_1(
+            105 => self.if_expr_group(&children[0], &children[1], parse_tree),
+            106 => self.if_expr_group_suffix_0(parse_tree),
+            107 => self.if_expr_group_suffix_1(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            102 => self.if_expr_group_list_0(&children[0], &children[1], parse_tree),
-            103 => self.if_expr_group_list_1(parse_tree),
-            104 => self.if_expr_list_0(&children[0], &children[1], parse_tree),
-            105 => self.if_expr_list_1(parse_tree),
-            106 => self.condition_0(&children[0], parse_tree),
-            107 => self.loop_0(&children[0], &children[1], parse_tree),
-            108 => self.while_0(&children[0], &children[1], &children[2], parse_tree),
-            109 => self.tuple_0(&children[0], parse_tree),
-            110 => self.local_variable_0(
+            108 => self.if_expr_group_list_0(&children[0], &children[1], parse_tree),
+            109 => self.if_expr_group_list_1(parse_tree),
+            110 => self.if_expr_list_0(&children[0], &children[1], parse_tree),
+            111 => self.if_expr_list_1(parse_tree),
+            112 => self.condition(&children[0], parse_tree),
+            113 => self.r#loop(&children[0], &children[1], parse_tree),
+            114 => self.r#while(&children[0], &children[1], &children[2], parse_tree),
+            115 => self.tuple(&children[0], parse_tree),
+            116 => self.local_variable(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            111 => self.local_variable_1(&children[0], &children[1], &children[2], parse_tree),
+            117 => self.local_variable_opt_0(&children[0], parse_tree),
+            118 => self.local_variable_opt_1(parse_tree),
             _ => Err(miette!("Unhandled production number: {}", prod_num)),
         }
     }

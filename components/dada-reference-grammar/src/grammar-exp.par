@@ -16,11 +16,11 @@
 /*  10 */ MaybeTrailingComma: MaybeTrailingCommaOpt /* Option */;
 /*  11 */ MaybeTrailingCommaOpt: ","; // Option<T>::Some
 /*  12 */ MaybeTrailingCommaOpt: ; // Option<T>::None
-/*  13 */ FieldList: "\(" FieldListSuffix;
-/*  14 */ FieldListSuffix: "\)";
-/*  15 */ FieldListSuffix: Field FieldListList /* Vec */ MaybeTrailingComma "\)";
-/*  16 */ FieldListList: Sep Field FieldListList; // Vec<T>::Push
-/*  17 */ FieldListList: ; // Vec<T>::New
+/*  13 */ FieldList: "\(" FieldListOpt /* Option */ "\)";
+/*  14 */ FieldListOpt: Field FieldListOptList /* Vec */ MaybeTrailingComma; // Option<T>::Some
+/*  15 */ FieldListOptList: Sep Field FieldListOptList; // Vec<T>::Push
+/*  16 */ FieldListOptList: ; // Vec<T>::New
+/*  17 */ FieldListOpt: ; // Option<T>::None
 /*  18 */ Field: FieldOpt /* Option */ Identifier;
 /*  19 */ FieldOpt: StorageMode; // Option<T>::Some
 /*  20 */ FieldOpt: ; // Option<T>::None
@@ -29,11 +29,11 @@
 /*  23 */ FunctionOpt: Effect; // Option<T>::Some
 /*  24 */ FunctionOpt: ; // Option<T>::None
 /*  25 */ Effect: "async";
-/*  26 */ ArgumentList: "\(" ArgumentListSuffix;
-/*  27 */ ArgumentListSuffix: "\)";
-/*  28 */ ArgumentListSuffix: Identifier ArgumentListList /* Vec */ MaybeTrailingComma "\)";
-/*  29 */ ArgumentListList: Sep Identifier ArgumentListList; // Vec<T>::Push
-/*  30 */ ArgumentListList: ; // Vec<T>::New
+/*  26 */ ArgumentList: "\(" ArgumentListOpt /* Option */ "\)";
+/*  27 */ ArgumentListOpt: Identifier ArgumentListOptList /* Vec */ MaybeTrailingComma; // Option<T>::Some
+/*  28 */ ArgumentListOptList: Sep Identifier ArgumentListOptList; // Vec<T>::Push
+/*  29 */ ArgumentListOptList: ; // Vec<T>::New
+/*  30 */ ArgumentListOpt: ; // Option<T>::None
 /*  31 */ FunctionBody: BlockExpr;
 /*  32 */ Expr: LocalVariable;
 /*  33 */ Expr: Expr5;
@@ -60,11 +60,11 @@
 /*  54 */ DotSuffix: "give";
 /*  55 */ DotSuffix: "lease";
 /*  56 */ DotSuffix: Identifier;
-/*  57 */ CallArgumentList: "\(" CallArgumentListSuffix;
-/*  58 */ CallArgumentListSuffix: "\)";
-/*  59 */ CallArgumentListSuffix: CallArgument CallArgumentListList /* Vec */ MaybeTrailingComma "\)";
-/*  60 */ CallArgumentListList: Sep CallArgument CallArgumentListList; // Vec<T>::Push
-/*  61 */ CallArgumentListList: ; // Vec<T>::New
+/*  57 */ CallArgumentList: "\(" CallArgumentListOpt /* Option */ "\)";
+/*  58 */ CallArgumentListOpt: CallArgument CallArgumentListOptList /* Vec */ MaybeTrailingComma; // Option<T>::Some
+/*  59 */ CallArgumentListOptList: Sep CallArgument CallArgumentListOptList; // Vec<T>::Push
+/*  60 */ CallArgumentListOptList: ; // Vec<T>::New
+/*  61 */ CallArgumentListOpt: ; // Option<T>::None
 /*  62 */ CallArgument: CallArgumentOpt /* Option */ Expr;
 /*  63 */ CallArgumentOpt: Identifier ":"; // Option<T>::Some
 /*  64 */ CallArgumentOpt: ; // Option<T>::None

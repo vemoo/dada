@@ -14,8 +14,7 @@ Sep : ","
     | "\n" { "\n" };
 MaybeTrailingComma : [ "," ];
 
-FieldList : "\(" "\)"
-          | "\(" Field { Sep Field } MaybeTrailingComma "\)";
+FieldList : "\(" [Field { Sep Field } MaybeTrailingComma] "\)";
 
 Field : [ StorageMode ] Identifier;
 
@@ -25,8 +24,7 @@ Function : [ Effect ] "fn" Identifier ArgumentList FunctionBody;
 
 Effect : "async";
 
-ArgumentList : "\(" "\)"
-             | "\(" Identifier { Sep Identifier } MaybeTrailingComma "\)";
+ArgumentList : "\(" [Identifier { Sep Identifier } MaybeTrailingComma] "\)";
 
 FunctionBody : BlockExpr;
 
@@ -54,8 +52,7 @@ DotSuffix : "await"
           | "lease"
           | Identifier;
 
-CallArgumentList : "\(" "\)"
-                 | "\(" CallArgument { Sep CallArgument } MaybeTrailingComma "\)";
+CallArgumentList : "\(" [CallArgument { Sep CallArgument } MaybeTrailingComma] "\)";
 
 CallArgument : [ Identifier ":" ] Expr;
 

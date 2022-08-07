@@ -149,8 +149,8 @@ const MAX_K: usize = 2;
 
 pub const NON_TERMINALS: &[&str; 60] = &[
     /*  0 */ "ArgumentList",
-    /*  1 */ "ArgumentListList",
-    /*  2 */ "ArgumentListSuffix",
+    /*  1 */ "ArgumentListOpt",
+    /*  2 */ "ArgumentListOptList",
     /*  3 */ "AtomicBlock",
     /*  4 */ "BlockExpr",
     /*  5 */ "BlockExprList",
@@ -158,8 +158,8 @@ pub const NON_TERMINALS: &[&str; 60] = &[
     /*  7 */ "BooleanLiteral",
     /*  8 */ "CallArgument",
     /*  9 */ "CallArgumentList",
-    /* 10 */ "CallArgumentListList",
-    /* 11 */ "CallArgumentListSuffix",
+    /* 10 */ "CallArgumentListOpt",
+    /* 11 */ "CallArgumentListOptList",
     /* 12 */ "CallArgumentOpt",
     /* 13 */ "Class",
     /* 14 */ "Condition",
@@ -181,8 +181,8 @@ pub const NON_TERMINALS: &[&str; 60] = &[
     /* 30 */ "Expr5List",
     /* 31 */ "Field",
     /* 32 */ "FieldList",
-    /* 33 */ "FieldListList",
-    /* 34 */ "FieldListSuffix",
+    /* 33 */ "FieldListOpt",
+    /* 34 */ "FieldListOptList",
     /* 35 */ "FieldOpt",
     /* 36 */ "FloatLiteral",
     /* 37 */ "Function",
@@ -217,9 +217,15 @@ pub const LOOKAHEAD_AUTOMATA: &[LookaheadDFA; 60] = &[
         transitions: &[],
         k: 0,
     },
-    /* 1 - "ArgumentListList" */
+    /* 1 - "ArgumentListOpt" */
     LookaheadDFA {
-        states: &[None, None, Some(29), None, None, Some(30)],
+        states: &[None, Some(27), Some(30)],
+        transitions: &[DFATransition(0, 9, 2), DFATransition(0, 24, 1)],
+        k: 1,
+    },
+    /* 2 - "ArgumentListOptList" */
+    LookaheadDFA {
+        states: &[None, None, Some(28), None, None, Some(29)],
         transitions: &[
             DFATransition(0, 6, 1),
             DFATransition(0, 7, 3),
@@ -231,12 +237,6 @@ pub const LOOKAHEAD_AUTOMATA: &[LookaheadDFA; 60] = &[
             DFATransition(4, 29, 5),
         ],
         k: 2,
-    },
-    /* 2 - "ArgumentListSuffix" */
-    LookaheadDFA {
-        states: &[None, Some(27), Some(28)],
-        transitions: &[DFATransition(0, 9, 1), DFATransition(0, 24, 2)],
-        k: 1,
     },
     /* 3 - "AtomicBlock" */
     LookaheadDFA {
@@ -294,9 +294,28 @@ pub const LOOKAHEAD_AUTOMATA: &[LookaheadDFA; 60] = &[
         transitions: &[],
         k: 0,
     },
-    /* 10 - "CallArgumentListList" */
+    /* 10 - "CallArgumentListOpt" */
     LookaheadDFA {
-        states: &[None, None, Some(60), None, None, Some(61)],
+        states: &[None, Some(58), Some(61)],
+        transitions: &[
+            DFATransition(0, 9, 2),
+            DFATransition(0, 10, 1),
+            DFATransition(0, 23, 1),
+            DFATransition(0, 24, 1),
+            DFATransition(0, 25, 1),
+            DFATransition(0, 26, 1),
+            DFATransition(0, 27, 1),
+            DFATransition(0, 29, 1),
+            DFATransition(0, 31, 1),
+            DFATransition(0, 33, 1),
+            DFATransition(0, 34, 1),
+            DFATransition(0, 35, 1),
+        ],
+        k: 1,
+    },
+    /* 11 - "CallArgumentListOptList" */
+    LookaheadDFA {
+        states: &[None, None, Some(59), None, None, Some(60)],
         transitions: &[
             DFATransition(0, 6, 1),
             DFATransition(0, 7, 3),
@@ -349,25 +368,6 @@ pub const LOOKAHEAD_AUTOMATA: &[LookaheadDFA; 60] = &[
             DFATransition(4, 35, 5),
         ],
         k: 2,
-    },
-    /* 11 - "CallArgumentListSuffix" */
-    LookaheadDFA {
-        states: &[None, Some(58), Some(59)],
-        transitions: &[
-            DFATransition(0, 9, 1),
-            DFATransition(0, 10, 2),
-            DFATransition(0, 23, 2),
-            DFATransition(0, 24, 2),
-            DFATransition(0, 25, 2),
-            DFATransition(0, 26, 2),
-            DFATransition(0, 27, 2),
-            DFATransition(0, 29, 2),
-            DFATransition(0, 31, 2),
-            DFATransition(0, 33, 2),
-            DFATransition(0, 34, 2),
-            DFATransition(0, 35, 2),
-        ],
-        k: 1,
     },
     /* 12 - "CallArgumentOpt" */
     LookaheadDFA {
@@ -946,9 +946,19 @@ pub const LOOKAHEAD_AUTOMATA: &[LookaheadDFA; 60] = &[
         transitions: &[],
         k: 0,
     },
-    /* 33 - "FieldListList" */
+    /* 33 - "FieldListOpt" */
     LookaheadDFA {
-        states: &[None, None, Some(16), None, None, Some(17)],
+        states: &[None, Some(14), Some(17)],
+        transitions: &[
+            DFATransition(0, 9, 2),
+            DFATransition(0, 10, 1),
+            DFATransition(0, 24, 1),
+        ],
+        k: 1,
+    },
+    /* 34 - "FieldListOptList" */
+    LookaheadDFA {
+        states: &[None, None, Some(15), None, None, Some(16)],
         transitions: &[
             DFATransition(0, 6, 1),
             DFATransition(0, 7, 3),
@@ -965,16 +975,6 @@ pub const LOOKAHEAD_AUTOMATA: &[LookaheadDFA; 60] = &[
             DFATransition(4, 12, 5),
         ],
         k: 2,
-    },
-    /* 34 - "FieldListSuffix" */
-    LookaheadDFA {
-        states: &[None, Some(14), Some(15)],
-        transitions: &[
-            DFATransition(0, 9, 1),
-            DFATransition(0, 10, 2),
-            DFATransition(0, 24, 2),
-        ],
-        k: 1,
     },
     /* 35 - "FieldOpt" */
     LookaheadDFA {
@@ -1253,32 +1253,27 @@ pub const PRODUCTIONS: &[Production; 100] = &[
         lhs: 51,
         production: &[],
     },
-    // 13 - FieldList: "\(" FieldListSuffix;
+    // 13 - FieldList: "\(" FieldListOpt /* Option */ "\)";
     Production {
         lhs: 32,
-        production: &[ParseType::N(34), ParseType::T(8)],
+        production: &[ParseType::T(9), ParseType::N(33), ParseType::T(8)],
     },
-    // 14 - FieldListSuffix: "\)";
-    Production {
-        lhs: 34,
-        production: &[ParseType::T(9)],
-    },
-    // 15 - FieldListSuffix: Field FieldListList /* Vec */ MaybeTrailingComma "\)";
-    Production {
-        lhs: 34,
-        production: &[
-            ParseType::T(9),
-            ParseType::N(50),
-            ParseType::N(33),
-            ParseType::N(31),
-        ],
-    },
-    // 16 - FieldListList: Sep Field FieldListList;
+    // 14 - FieldListOpt: Field FieldListOptList /* Vec */ MaybeTrailingComma;
     Production {
         lhs: 33,
-        production: &[ParseType::N(33), ParseType::N(31), ParseType::N(54)],
+        production: &[ParseType::N(50), ParseType::N(34), ParseType::N(31)],
     },
-    // 17 - FieldListList: ;
+    // 15 - FieldListOptList: Sep Field FieldListOptList;
+    Production {
+        lhs: 34,
+        production: &[ParseType::N(34), ParseType::N(31), ParseType::N(54)],
+    },
+    // 16 - FieldListOptList: ;
+    Production {
+        lhs: 34,
+        production: &[],
+    },
+    // 17 - FieldListOpt: ;
     Production {
         lhs: 33,
         production: &[],
@@ -1329,32 +1324,27 @@ pub const PRODUCTIONS: &[Production; 100] = &[
         lhs: 17,
         production: &[ParseType::T(12)],
     },
-    // 26 - ArgumentList: "\(" ArgumentListSuffix;
+    // 26 - ArgumentList: "\(" ArgumentListOpt /* Option */ "\)";
     Production {
         lhs: 0,
-        production: &[ParseType::N(2), ParseType::T(8)],
+        production: &[ParseType::T(9), ParseType::N(1), ParseType::T(8)],
     },
-    // 27 - ArgumentListSuffix: "\)";
-    Production {
-        lhs: 2,
-        production: &[ParseType::T(9)],
-    },
-    // 28 - ArgumentListSuffix: Identifier ArgumentListList /* Vec */ MaybeTrailingComma "\)";
-    Production {
-        lhs: 2,
-        production: &[
-            ParseType::T(9),
-            ParseType::N(50),
-            ParseType::N(1),
-            ParseType::N(40),
-        ],
-    },
-    // 29 - ArgumentListList: Sep Identifier ArgumentListList;
+    // 27 - ArgumentListOpt: Identifier ArgumentListOptList /* Vec */ MaybeTrailingComma;
     Production {
         lhs: 1,
-        production: &[ParseType::N(1), ParseType::N(40), ParseType::N(54)],
+        production: &[ParseType::N(50), ParseType::N(2), ParseType::N(40)],
     },
-    // 30 - ArgumentListList: ;
+    // 28 - ArgumentListOptList: Sep Identifier ArgumentListOptList;
+    Production {
+        lhs: 2,
+        production: &[ParseType::N(2), ParseType::N(40), ParseType::N(54)],
+    },
+    // 29 - ArgumentListOptList: ;
+    Production {
+        lhs: 2,
+        production: &[],
+    },
+    // 30 - ArgumentListOpt: ;
     Production {
         lhs: 1,
         production: &[],
@@ -1489,32 +1479,27 @@ pub const PRODUCTIONS: &[Production; 100] = &[
         lhs: 16,
         production: &[ParseType::N(40)],
     },
-    // 57 - CallArgumentList: "\(" CallArgumentListSuffix;
+    // 57 - CallArgumentList: "\(" CallArgumentListOpt /* Option */ "\)";
     Production {
         lhs: 9,
-        production: &[ParseType::N(11), ParseType::T(8)],
+        production: &[ParseType::T(9), ParseType::N(10), ParseType::T(8)],
     },
-    // 58 - CallArgumentListSuffix: "\)";
-    Production {
-        lhs: 11,
-        production: &[ParseType::T(9)],
-    },
-    // 59 - CallArgumentListSuffix: CallArgument CallArgumentListList /* Vec */ MaybeTrailingComma "\)";
-    Production {
-        lhs: 11,
-        production: &[
-            ParseType::T(9),
-            ParseType::N(50),
-            ParseType::N(10),
-            ParseType::N(8),
-        ],
-    },
-    // 60 - CallArgumentListList: Sep CallArgument CallArgumentListList;
+    // 58 - CallArgumentListOpt: CallArgument CallArgumentListOptList /* Vec */ MaybeTrailingComma;
     Production {
         lhs: 10,
-        production: &[ParseType::N(10), ParseType::N(8), ParseType::N(54)],
+        production: &[ParseType::N(50), ParseType::N(11), ParseType::N(8)],
     },
-    // 61 - CallArgumentListList: ;
+    // 59 - CallArgumentListOptList: Sep CallArgument CallArgumentListOptList;
+    Production {
+        lhs: 11,
+        production: &[ParseType::N(11), ParseType::N(8), ParseType::N(54)],
+    },
+    // 60 - CallArgumentListOptList: ;
+    Production {
+        lhs: 11,
+        production: &[],
+    },
+    // 61 - CallArgumentListOpt: ;
     Production {
         lhs: 10,
         production: &[],

@@ -167,12 +167,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 13:
     ///
-    /// FieldList: "\(" FieldListSuffix;
+    /// FieldList: "\(" FieldListOpt /* Option */ "\)";
     ///
     fn field_list(
         &mut self,
         _l_paren: &ParseTreeStackEntry,
-        _field_list_suffix: &ParseTreeStackEntry,
+        _field_list_opt: &ParseTreeStackEntry,
+        _r_paren: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -180,11 +181,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 14:
     ///
-    /// FieldListSuffix: "\)";
+    /// FieldListOpt: Field FieldListOptList /* Vec */ MaybeTrailingComma; // Option<T>::Some
     ///
-    fn field_list_suffix_0(
+    fn field_list_opt_0(
         &mut self,
-        _r_paren: &ParseTreeStackEntry,
+        _field: &ParseTreeStackEntry,
+        _field_list_opt_list: &ParseTreeStackEntry,
+        _maybe_trailing_comma: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -192,14 +195,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 15:
     ///
-    /// FieldListSuffix: Field FieldListList /* Vec */ MaybeTrailingComma "\)";
+    /// FieldListOptList: Sep Field FieldListOptList; // Vec<T>::Push
     ///
-    fn field_list_suffix_1(
+    fn field_list_opt_list_0(
         &mut self,
+        _sep: &ParseTreeStackEntry,
         _field: &ParseTreeStackEntry,
-        _field_list_list: &ParseTreeStackEntry,
-        _maybe_trailing_comma: &ParseTreeStackEntry,
-        _r_paren: &ParseTreeStackEntry,
+        _field_list_opt_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -207,23 +209,17 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 16:
     ///
-    /// FieldListList: Sep Field FieldListList; // Vec<T>::Push
+    /// FieldListOptList: ; // Vec<T>::New
     ///
-    fn field_list_list_0(
-        &mut self,
-        _sep: &ParseTreeStackEntry,
-        _field: &ParseTreeStackEntry,
-        _field_list_list: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn field_list_opt_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 17:
     ///
-    /// FieldListList: ; // Vec<T>::New
+    /// FieldListOpt: ; // Option<T>::None
     ///
-    fn field_list_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn field_list_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
@@ -322,12 +318,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 26:
     ///
-    /// ArgumentList: "\(" ArgumentListSuffix;
+    /// ArgumentList: "\(" ArgumentListOpt /* Option */ "\)";
     ///
     fn argument_list(
         &mut self,
         _l_paren: &ParseTreeStackEntry,
-        _argument_list_suffix: &ParseTreeStackEntry,
+        _argument_list_opt: &ParseTreeStackEntry,
+        _r_paren: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -335,11 +332,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 27:
     ///
-    /// ArgumentListSuffix: "\)";
+    /// ArgumentListOpt: Identifier ArgumentListOptList /* Vec */ MaybeTrailingComma; // Option<T>::Some
     ///
-    fn argument_list_suffix_0(
+    fn argument_list_opt_0(
         &mut self,
-        _r_paren: &ParseTreeStackEntry,
+        _identifier: &ParseTreeStackEntry,
+        _argument_list_opt_list: &ParseTreeStackEntry,
+        _maybe_trailing_comma: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -347,14 +346,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 28:
     ///
-    /// ArgumentListSuffix: Identifier ArgumentListList /* Vec */ MaybeTrailingComma "\)";
+    /// ArgumentListOptList: Sep Identifier ArgumentListOptList; // Vec<T>::Push
     ///
-    fn argument_list_suffix_1(
+    fn argument_list_opt_list_0(
         &mut self,
+        _sep: &ParseTreeStackEntry,
         _identifier: &ParseTreeStackEntry,
-        _argument_list_list: &ParseTreeStackEntry,
-        _maybe_trailing_comma: &ParseTreeStackEntry,
-        _r_paren: &ParseTreeStackEntry,
+        _argument_list_opt_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -362,23 +360,17 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 29:
     ///
-    /// ArgumentListList: Sep Identifier ArgumentListList; // Vec<T>::Push
+    /// ArgumentListOptList: ; // Vec<T>::New
     ///
-    fn argument_list_list_0(
-        &mut self,
-        _sep: &ParseTreeStackEntry,
-        _identifier: &ParseTreeStackEntry,
-        _argument_list_list: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn argument_list_opt_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 30:
     ///
-    /// ArgumentListList: ; // Vec<T>::New
+    /// ArgumentListOpt: ; // Option<T>::None
     ///
-    fn argument_list_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn argument_list_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
@@ -691,12 +683,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 57:
     ///
-    /// CallArgumentList: "\(" CallArgumentListSuffix;
+    /// CallArgumentList: "\(" CallArgumentListOpt /* Option */ "\)";
     ///
     fn call_argument_list(
         &mut self,
         _l_paren: &ParseTreeStackEntry,
-        _call_argument_list_suffix: &ParseTreeStackEntry,
+        _call_argument_list_opt: &ParseTreeStackEntry,
+        _r_paren: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -704,11 +697,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 58:
     ///
-    /// CallArgumentListSuffix: "\)";
+    /// CallArgumentListOpt: CallArgument CallArgumentListOptList /* Vec */ MaybeTrailingComma; // Option<T>::Some
     ///
-    fn call_argument_list_suffix_0(
+    fn call_argument_list_opt_0(
         &mut self,
-        _r_paren: &ParseTreeStackEntry,
+        _call_argument: &ParseTreeStackEntry,
+        _call_argument_list_opt_list: &ParseTreeStackEntry,
+        _maybe_trailing_comma: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -716,14 +711,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 59:
     ///
-    /// CallArgumentListSuffix: CallArgument CallArgumentListList /* Vec */ MaybeTrailingComma "\)";
+    /// CallArgumentListOptList: Sep CallArgument CallArgumentListOptList; // Vec<T>::Push
     ///
-    fn call_argument_list_suffix_1(
+    fn call_argument_list_opt_list_0(
         &mut self,
+        _sep: &ParseTreeStackEntry,
         _call_argument: &ParseTreeStackEntry,
-        _call_argument_list_list: &ParseTreeStackEntry,
-        _maybe_trailing_comma: &ParseTreeStackEntry,
-        _r_paren: &ParseTreeStackEntry,
+        _call_argument_list_opt_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
@@ -731,23 +725,17 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 60:
     ///
-    /// CallArgumentListList: Sep CallArgument CallArgumentListList; // Vec<T>::Push
+    /// CallArgumentListOptList: ; // Vec<T>::New
     ///
-    fn call_argument_list_list_0(
-        &mut self,
-        _sep: &ParseTreeStackEntry,
-        _call_argument: &ParseTreeStackEntry,
-        _call_argument_list_list: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
+    fn call_argument_list_opt_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
     /// Semantic action for production 61:
     ///
-    /// CallArgumentListList: ; // Vec<T>::New
+    /// CallArgumentListOpt: ; // Option<T>::None
     ///
-    fn call_argument_list_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
+    fn call_argument_list_opt_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
@@ -1226,17 +1214,11 @@ impl UserActionsTrait<'_> for Grammar {
             10 => self.maybe_trailing_comma(&children[0], parse_tree),
             11 => self.maybe_trailing_comma_opt_0(&children[0], parse_tree),
             12 => self.maybe_trailing_comma_opt_1(parse_tree),
-            13 => self.field_list(&children[0], &children[1], parse_tree),
-            14 => self.field_list_suffix_0(&children[0], parse_tree),
-            15 => self.field_list_suffix_1(
-                &children[0],
-                &children[1],
-                &children[2],
-                &children[3],
-                parse_tree,
-            ),
-            16 => self.field_list_list_0(&children[0], &children[1], &children[2], parse_tree),
-            17 => self.field_list_list_1(parse_tree),
+            13 => self.field_list(&children[0], &children[1], &children[2], parse_tree),
+            14 => self.field_list_opt_0(&children[0], &children[1], &children[2], parse_tree),
+            15 => self.field_list_opt_list_0(&children[0], &children[1], &children[2], parse_tree),
+            16 => self.field_list_opt_list_1(parse_tree),
+            17 => self.field_list_opt_1(parse_tree),
             18 => self.field(&children[0], &children[1], parse_tree),
             19 => self.field_opt_0(&children[0], parse_tree),
             20 => self.field_opt_1(parse_tree),
@@ -1252,17 +1234,13 @@ impl UserActionsTrait<'_> for Grammar {
             23 => self.function_opt_0(&children[0], parse_tree),
             24 => self.function_opt_1(parse_tree),
             25 => self.effect(&children[0], parse_tree),
-            26 => self.argument_list(&children[0], &children[1], parse_tree),
-            27 => self.argument_list_suffix_0(&children[0], parse_tree),
-            28 => self.argument_list_suffix_1(
-                &children[0],
-                &children[1],
-                &children[2],
-                &children[3],
-                parse_tree,
-            ),
-            29 => self.argument_list_list_0(&children[0], &children[1], &children[2], parse_tree),
-            30 => self.argument_list_list_1(parse_tree),
+            26 => self.argument_list(&children[0], &children[1], &children[2], parse_tree),
+            27 => self.argument_list_opt_0(&children[0], &children[1], &children[2], parse_tree),
+            28 => {
+                self.argument_list_opt_list_0(&children[0], &children[1], &children[2], parse_tree)
+            }
+            29 => self.argument_list_opt_list_1(parse_tree),
+            30 => self.argument_list_opt_1(parse_tree),
             31 => self.function_body(&children[0], parse_tree),
             32 => self.expr_0(&children[0], parse_tree),
             33 => self.expr_1(&children[0], parse_tree),
@@ -1289,19 +1267,18 @@ impl UserActionsTrait<'_> for Grammar {
             54 => self.dot_suffix_2(&children[0], parse_tree),
             55 => self.dot_suffix_3(&children[0], parse_tree),
             56 => self.dot_suffix_4(&children[0], parse_tree),
-            57 => self.call_argument_list(&children[0], &children[1], parse_tree),
-            58 => self.call_argument_list_suffix_0(&children[0], parse_tree),
-            59 => self.call_argument_list_suffix_1(
+            57 => self.call_argument_list(&children[0], &children[1], &children[2], parse_tree),
+            58 => {
+                self.call_argument_list_opt_0(&children[0], &children[1], &children[2], parse_tree)
+            }
+            59 => self.call_argument_list_opt_list_0(
                 &children[0],
                 &children[1],
                 &children[2],
-                &children[3],
                 parse_tree,
             ),
-            60 => {
-                self.call_argument_list_list_0(&children[0], &children[1], &children[2], parse_tree)
-            }
-            61 => self.call_argument_list_list_1(parse_tree),
+            60 => self.call_argument_list_opt_list_1(parse_tree),
+            61 => self.call_argument_list_opt_1(parse_tree),
             62 => self.call_argument(&children[0], &children[1], parse_tree),
             63 => self.call_argument_opt_0(&children[0], &children[1], parse_tree),
             64 => self.call_argument_opt_1(parse_tree),

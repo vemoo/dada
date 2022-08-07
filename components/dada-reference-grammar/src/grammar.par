@@ -30,11 +30,7 @@ FunctionBody : BlockExpr;
 /*** everything after this is expressions ***/
 
 Expr : LocalVariable
-     | ReturnWithExpr
      | Expr5;
-
-ReturnWithExpr : "return" Expr;
-ReturnWithoutExpr : "return";
 
 Expr5 : Expr4 { ( "\+=" | "-=" | "/=" | "\*=" | ":=" ) Expr4 };
 
@@ -88,7 +84,9 @@ IntegerLiteral : "[0-9][0-9_]*";
 // quotes - `\"` doesn't work.
 StringLiteral : "\u{0022}(?s:[^\u{0022}]*)\u{0022}";
 
-BlockExpr : "\{" { Expr } [ReturnWithoutExpr] "\}";
+ReturnExpr : "return" [Expr];
+
+BlockExpr : "\{" { Expr } [ReturnExpr] "\}";
 
 AtomicBlock : "atomic" BlockExpr;
 

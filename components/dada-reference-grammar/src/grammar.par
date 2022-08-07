@@ -10,8 +10,12 @@ Item : Class
 
 Class : "class" Identifier FieldList;
 
+Sep : ","
+    | "\n" { "\n" };
+MaybeTrailingComma : [ "," ];
+
 FieldList : "\(" "\)"
-          | "\(" Field { [ "," ] Field } "\)";
+          | "\(" Field { Sep Field } MaybeTrailingComma "\)";
 
 Field : [ StorageMode ] Identifier;
 
@@ -22,7 +26,7 @@ Function : [ Effect ] "fn" Identifier ArgumentList FunctionBody;
 Effect : "async";
 
 ArgumentList : "\(" "\)"
-             | "\(" Identifier { "," Identifier } "\)";
+             | "\(" Identifier { Sep Identifier } MaybeTrailingComma "\)";
 
 FunctionBody : BlockExpr;
 
@@ -51,9 +55,7 @@ DotSuffix : "await"
           | Identifier;
 
 CallArgumentList : "\(" "\)"
-                 | "\(" CallArgument { "," CallArgument } MaybeTrailingComma "\)";
-
-MaybeTrailingComma : [ "," ];
+                 | "\(" CallArgument { Sep CallArgument } MaybeTrailingComma "\)";
 
 CallArgument : [ Identifier ":" ] Expr;
 

@@ -38,81 +38,68 @@
 /*  32 */ Expr: LocalVariable;
 /*  33 */ Expr: Expr5;
 /*  34 */ Expr5: Expr4 Expr5List /* Vec */;
-/*  35 */ Expr5List: Expr5ListGroup Expr4 Expr5List; // Vec<T>::Push
-/*  36 */ Expr5ListGroup: "\+=";
-/*  37 */ Expr5ListGroup: "-=";
-/*  38 */ Expr5ListGroup: "/=";
-/*  39 */ Expr5ListGroup: "\*=";
-/*  40 */ Expr5ListGroup: ":=";
-/*  41 */ Expr5List: ; // Vec<T>::New
-/*  42 */ Expr4: Expr3 Expr4List /* Vec */;
-/*  43 */ Expr4List: Expr4ListGroup Expr3 Expr4List; // Vec<T>::Push
-/*  44 */ Expr4ListGroup: "==";
-/*  45 */ Expr4ListGroup: "<";
-/*  46 */ Expr4ListGroup: ">";
-/*  47 */ Expr4List: ; // Vec<T>::New
-/*  48 */ Expr3: Expr2 Expr3List /* Vec */;
-/*  49 */ Expr3List: Expr3ListGroup Expr2 Expr3List; // Vec<T>::Push
-/*  50 */ Expr3ListGroup: "\+";
-/*  51 */ Expr3ListGroup: "-";
-/*  52 */ Expr3List: ; // Vec<T>::New
-/*  53 */ Expr2: Expr1 Expr2List /* Vec */;
-/*  54 */ Expr2List: Expr2ListGroup Expr1 Expr2List; // Vec<T>::Push
-/*  55 */ Expr2ListGroup: "/";
-/*  56 */ Expr2ListGroup: "\*";
-/*  57 */ Expr2List: ; // Vec<T>::New
-/*  58 */ Expr1: Expr0 Expr1List /* Vec */;
-/*  59 */ Expr1List: Expr1ListGroup Expr1List; // Vec<T>::Push
-/*  60 */ Expr1ListGroup: DotExpr;
-/*  61 */ Expr1ListGroup: CallArgumentList;
-/*  62 */ Expr1List: ; // Vec<T>::New
-/*  63 */ DotExpr: "\." DotSuffix;
-/*  64 */ DotSuffix: "await";
-/*  65 */ DotSuffix: "share";
-/*  66 */ DotSuffix: "give";
-/*  67 */ DotSuffix: "lease";
-/*  68 */ DotSuffix: Identifier;
-/*  69 */ CallArgumentList: "\(" CallArgumentListSuffix;
-/*  70 */ CallArgumentListSuffix: "\)";
-/*  71 */ CallArgumentListSuffix: CallArgument CallArgumentListList /* Vec */ MaybeTrailingComma "\)";
-/*  72 */ CallArgumentListList: Sep CallArgument CallArgumentListList; // Vec<T>::Push
-/*  73 */ CallArgumentListList: ; // Vec<T>::New
-/*  74 */ CallArgument: CallArgumentOpt /* Option */ Expr;
-/*  75 */ CallArgumentOpt: Identifier ":"; // Option<T>::Some
-/*  76 */ CallArgumentOpt: ; // Option<T>::None
-/*  77 */ Expr0: Identifier;
-/*  78 */ Expr0: BooleanLiteral;
-/*  79 */ Expr0: FloatLiteral;
-/*  80 */ Expr0: IntegerLiteral;
-/*  81 */ Expr0: StringLiteral;
-/*  82 */ Expr0: BlockExpr;
-/*  83 */ Expr0: AtomicBlock;
-/*  84 */ Expr0: IfExpr;
-/*  85 */ Expr0: Loop;
-/*  86 */ Expr0: While;
-/*  87 */ Expr0: Tuple;
-/*  88 */ BooleanLiteral: "true";
-/*  89 */ BooleanLiteral: "false";
-/*  90 */ Identifier: "[a-z|A-Z_][a-z|A-Z|0-9_]*";
-/*  91 */ FloatLiteral: "[0-9][0-9_]*\.[0-9][0-9_]*";
-/*  92 */ IntegerLiteral: "[0-9][0-9_]*";
-/*  93 */ StringLiteral: "\u{0022}(?s:[^\u{0022}]*)\u{0022}";
-/*  94 */ ReturnExpr: "return" ReturnExprOpt /* Option */;
-/*  95 */ ReturnExprOpt: Expr; // Option<T>::Some
-/*  96 */ ReturnExprOpt: ; // Option<T>::None
-/*  97 */ BlockExpr: "\{" BlockExprList /* Vec */ BlockExprOpt /* Option */ "\}";
-/*  98 */ BlockExprList: Expr BlockExprList; // Vec<T>::Push
-/*  99 */ BlockExprList: ; // Vec<T>::New
-/* 100 */ BlockExprOpt: ReturnExpr; // Option<T>::Some
-/* 101 */ BlockExprOpt: ; // Option<T>::None
-/* 102 */ AtomicBlock: "atomic" BlockExpr;
-/* 103 */ IfExpr: "if" Condition BlockExpr IfExprOpt /* Option */;
-/* 104 */ IfExprOpt: "else" BlockExpr; // Option<T>::Some
-/* 105 */ IfExprOpt: ; // Option<T>::None
-/* 106 */ Condition: Expr;
-/* 107 */ Loop: "loop" BlockExpr;
-/* 108 */ While: "while" Condition BlockExpr;
-/* 109 */ Tuple: "tuple";
-/* 110 */ LocalVariable: LocalVariableOpt /* Option */ Identifier "=" Expr;
-/* 111 */ LocalVariableOpt: StorageMode; // Option<T>::Some
-/* 112 */ LocalVariableOpt: ; // Option<T>::None
+/*  35 */ Expr5List: "(?:\+|-|/|\*|:)=" Expr4 Expr5List; // Vec<T>::Push
+/*  36 */ Expr5List: ; // Vec<T>::New
+/*  37 */ Expr4: Expr3 Expr4List /* Vec */;
+/*  38 */ Expr4List: "==|<|>" Expr3 Expr4List; // Vec<T>::Push
+/*  39 */ Expr4List: ; // Vec<T>::New
+/*  40 */ Expr3: Expr2 Expr3List /* Vec */;
+/*  41 */ Expr3List: "\+|-" Expr2 Expr3List; // Vec<T>::Push
+/*  42 */ Expr3List: ; // Vec<T>::New
+/*  43 */ Expr2: Expr1 Expr2List /* Vec */;
+/*  44 */ Expr2List: "/|\*" Expr1 Expr2List; // Vec<T>::Push
+/*  45 */ Expr2List: ; // Vec<T>::New
+/*  46 */ Expr1: Expr0 Expr1List /* Vec */;
+/*  47 */ Expr1List: Expr1ListGroup Expr1List; // Vec<T>::Push
+/*  48 */ Expr1ListGroup: DotExpr;
+/*  49 */ Expr1ListGroup: CallArgumentList;
+/*  50 */ Expr1List: ; // Vec<T>::New
+/*  51 */ DotExpr: "\." DotSuffix;
+/*  52 */ DotSuffix: "await";
+/*  53 */ DotSuffix: "share";
+/*  54 */ DotSuffix: "give";
+/*  55 */ DotSuffix: "lease";
+/*  56 */ DotSuffix: Identifier;
+/*  57 */ CallArgumentList: "\(" CallArgumentListSuffix;
+/*  58 */ CallArgumentListSuffix: "\)";
+/*  59 */ CallArgumentListSuffix: CallArgument CallArgumentListList /* Vec */ MaybeTrailingComma "\)";
+/*  60 */ CallArgumentListList: Sep CallArgument CallArgumentListList; // Vec<T>::Push
+/*  61 */ CallArgumentListList: ; // Vec<T>::New
+/*  62 */ CallArgument: CallArgumentOpt /* Option */ Expr;
+/*  63 */ CallArgumentOpt: Identifier ":"; // Option<T>::Some
+/*  64 */ CallArgumentOpt: ; // Option<T>::None
+/*  65 */ Expr0: Identifier;
+/*  66 */ Expr0: BooleanLiteral;
+/*  67 */ Expr0: FloatLiteral;
+/*  68 */ Expr0: IntegerLiteral;
+/*  69 */ Expr0: StringLiteral;
+/*  70 */ Expr0: BlockExpr;
+/*  71 */ Expr0: AtomicBlock;
+/*  72 */ Expr0: IfExpr;
+/*  73 */ Expr0: Loop;
+/*  74 */ Expr0: While;
+/*  75 */ Expr0: Tuple;
+/*  76 */ BooleanLiteral: "true|false";
+/*  77 */ Identifier: "[a-z|A-Z_][a-z|A-Z|0-9_]*";
+/*  78 */ FloatLiteral: "[0-9][0-9_]*\.[0-9][0-9_]*";
+/*  79 */ IntegerLiteral: "[0-9][0-9_]*";
+/*  80 */ StringLiteral: "\u{0022}(?s:[^\u{0022}]*)\u{0022}";
+/*  81 */ ReturnExpr: "return" ReturnExprOpt /* Option */;
+/*  82 */ ReturnExprOpt: Expr; // Option<T>::Some
+/*  83 */ ReturnExprOpt: ; // Option<T>::None
+/*  84 */ BlockExpr: "\{" BlockExprList /* Vec */ BlockExprOpt /* Option */ "\}";
+/*  85 */ BlockExprList: Expr BlockExprList; // Vec<T>::Push
+/*  86 */ BlockExprList: ; // Vec<T>::New
+/*  87 */ BlockExprOpt: ReturnExpr; // Option<T>::Some
+/*  88 */ BlockExprOpt: ; // Option<T>::None
+/*  89 */ AtomicBlock: "atomic" BlockExpr;
+/*  90 */ IfExpr: "if" Condition BlockExpr IfExprOpt /* Option */;
+/*  91 */ IfExprOpt: "else" BlockExpr; // Option<T>::Some
+/*  92 */ IfExprOpt: ; // Option<T>::None
+/*  93 */ Condition: Expr;
+/*  94 */ Loop: "loop" BlockExpr;
+/*  95 */ While: "while" Condition BlockExpr;
+/*  96 */ Tuple: "tuple";
+/*  97 */ LocalVariable: LocalVariableOpt /* Option */ Identifier "=" Expr;
+/*  98 */ LocalVariableOpt: StorageMode; // Option<T>::Some
+/*  99 */ LocalVariableOpt: ; // Option<T>::None

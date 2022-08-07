@@ -433,11 +433,11 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 35:
     ///
-    /// Expr5List: Expr5ListGroup Expr4 Expr5List; // Vec<T>::Push
+    /// Expr5List: "(?:\+|-|/|\*|:)=" Expr4 Expr5List; // Vec<T>::Push
     ///
     fn expr5_list_0(
         &mut self,
-        _expr5_list_group: &ParseTreeStackEntry,
+        _l_paren_quest_colon_plus_or_minus_or_slash_or_star_or_colon_r_paren_equ: &ParseTreeStackEntry,
         _expr4: &ParseTreeStackEntry,
         _expr5_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
@@ -447,73 +447,13 @@ pub trait GrammarTrait {
 
     /// Semantic action for production 36:
     ///
-    /// Expr5ListGroup: "\+=";
-    ///
-    fn expr5_list_group_0(
-        &mut self,
-        _plus_equ: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 37:
-    ///
-    /// Expr5ListGroup: "-=";
-    ///
-    fn expr5_list_group_1(
-        &mut self,
-        _minus_equ: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 38:
-    ///
-    /// Expr5ListGroup: "/=";
-    ///
-    fn expr5_list_group_2(
-        &mut self,
-        _slash_equ: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 39:
-    ///
-    /// Expr5ListGroup: "\*=";
-    ///
-    fn expr5_list_group_3(
-        &mut self,
-        _star_equ: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 40:
-    ///
-    /// Expr5ListGroup: ":=";
-    ///
-    fn expr5_list_group_4(
-        &mut self,
-        _colon_equ: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 41:
-    ///
     /// Expr5List: ; // Vec<T>::New
     ///
     fn expr5_list_1(&mut self, _parse_tree: &Tree<ParseTreeType>) -> Result<()> {
         Ok(())
     }
 
-    /// Semantic action for production 42:
+    /// Semantic action for production 37:
     ///
     /// Expr4: Expr3 Expr4List /* Vec */;
     ///
@@ -526,13 +466,13 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 43:
+    /// Semantic action for production 38:
     ///
-    /// Expr4List: Expr4ListGroup Expr3 Expr4List; // Vec<T>::Push
+    /// Expr4List: "==|<|>" Expr3 Expr4List; // Vec<T>::Push
     ///
     fn expr4_list_0(
         &mut self,
-        _expr4_list_group: &ParseTreeStackEntry,
+        _equ_equ_or_l_t_or_g_t: &ParseTreeStackEntry,
         _expr3: &ParseTreeStackEntry,
         _expr4_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
@@ -540,43 +480,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 44:
-    ///
-    /// Expr4ListGroup: "==";
-    ///
-    fn expr4_list_group_0(
-        &mut self,
-        _equ_equ: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 45:
-    ///
-    /// Expr4ListGroup: "<";
-    ///
-    fn expr4_list_group_1(
-        &mut self,
-        _l_t: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 46:
-    ///
-    /// Expr4ListGroup: ">";
-    ///
-    fn expr4_list_group_2(
-        &mut self,
-        _g_t: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 47:
+    /// Semantic action for production 39:
     ///
     /// Expr4List: ; // Vec<T>::New
     ///
@@ -584,7 +488,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 48:
+    /// Semantic action for production 40:
     ///
     /// Expr3: Expr2 Expr3List /* Vec */;
     ///
@@ -597,13 +501,13 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 49:
+    /// Semantic action for production 41:
     ///
-    /// Expr3List: Expr3ListGroup Expr2 Expr3List; // Vec<T>::Push
+    /// Expr3List: "\+|-" Expr2 Expr3List; // Vec<T>::Push
     ///
     fn expr3_list_0(
         &mut self,
-        _expr3_list_group: &ParseTreeStackEntry,
+        _plus_or_minus: &ParseTreeStackEntry,
         _expr2: &ParseTreeStackEntry,
         _expr3_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
@@ -611,31 +515,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 50:
-    ///
-    /// Expr3ListGroup: "\+";
-    ///
-    fn expr3_list_group_0(
-        &mut self,
-        _plus: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 51:
-    ///
-    /// Expr3ListGroup: "-";
-    ///
-    fn expr3_list_group_1(
-        &mut self,
-        _minus: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 52:
+    /// Semantic action for production 42:
     ///
     /// Expr3List: ; // Vec<T>::New
     ///
@@ -643,7 +523,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 53:
+    /// Semantic action for production 43:
     ///
     /// Expr2: Expr1 Expr2List /* Vec */;
     ///
@@ -656,13 +536,13 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 54:
+    /// Semantic action for production 44:
     ///
-    /// Expr2List: Expr2ListGroup Expr1 Expr2List; // Vec<T>::Push
+    /// Expr2List: "/|\*" Expr1 Expr2List; // Vec<T>::Push
     ///
     fn expr2_list_0(
         &mut self,
-        _expr2_list_group: &ParseTreeStackEntry,
+        _slash_or_star: &ParseTreeStackEntry,
         _expr1: &ParseTreeStackEntry,
         _expr2_list: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
@@ -670,31 +550,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 55:
-    ///
-    /// Expr2ListGroup: "/";
-    ///
-    fn expr2_list_group_0(
-        &mut self,
-        _slash: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 56:
-    ///
-    /// Expr2ListGroup: "\*";
-    ///
-    fn expr2_list_group_1(
-        &mut self,
-        _star: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 57:
+    /// Semantic action for production 45:
     ///
     /// Expr2List: ; // Vec<T>::New
     ///
@@ -702,7 +558,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 58:
+    /// Semantic action for production 46:
     ///
     /// Expr1: Expr0 Expr1List /* Vec */;
     ///
@@ -715,7 +571,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 59:
+    /// Semantic action for production 47:
     ///
     /// Expr1List: Expr1ListGroup Expr1List; // Vec<T>::Push
     ///
@@ -728,7 +584,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 60:
+    /// Semantic action for production 48:
     ///
     /// Expr1ListGroup: DotExpr;
     ///
@@ -740,7 +596,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 61:
+    /// Semantic action for production 49:
     ///
     /// Expr1ListGroup: CallArgumentList;
     ///
@@ -752,7 +608,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 62:
+    /// Semantic action for production 50:
     ///
     /// Expr1List: ; // Vec<T>::New
     ///
@@ -760,7 +616,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 63:
+    /// Semantic action for production 51:
     ///
     /// DotExpr: "\." DotSuffix;
     ///
@@ -773,7 +629,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 64:
+    /// Semantic action for production 52:
     ///
     /// DotSuffix: "await";
     ///
@@ -785,7 +641,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 65:
+    /// Semantic action for production 53:
     ///
     /// DotSuffix: "share";
     ///
@@ -797,7 +653,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 66:
+    /// Semantic action for production 54:
     ///
     /// DotSuffix: "give";
     ///
@@ -809,7 +665,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 67:
+    /// Semantic action for production 55:
     ///
     /// DotSuffix: "lease";
     ///
@@ -821,7 +677,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 68:
+    /// Semantic action for production 56:
     ///
     /// DotSuffix: Identifier;
     ///
@@ -833,7 +689,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 69:
+    /// Semantic action for production 57:
     ///
     /// CallArgumentList: "\(" CallArgumentListSuffix;
     ///
@@ -846,7 +702,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 70:
+    /// Semantic action for production 58:
     ///
     /// CallArgumentListSuffix: "\)";
     ///
@@ -858,7 +714,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 71:
+    /// Semantic action for production 59:
     ///
     /// CallArgumentListSuffix: CallArgument CallArgumentListList /* Vec */ MaybeTrailingComma "\)";
     ///
@@ -873,7 +729,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 72:
+    /// Semantic action for production 60:
     ///
     /// CallArgumentListList: Sep CallArgument CallArgumentListList; // Vec<T>::Push
     ///
@@ -887,7 +743,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 73:
+    /// Semantic action for production 61:
     ///
     /// CallArgumentListList: ; // Vec<T>::New
     ///
@@ -895,7 +751,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 74:
+    /// Semantic action for production 62:
     ///
     /// CallArgument: CallArgumentOpt /* Option */ Expr;
     ///
@@ -908,7 +764,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 75:
+    /// Semantic action for production 63:
     ///
     /// CallArgumentOpt: Identifier ":"; // Option<T>::Some
     ///
@@ -921,7 +777,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 76:
+    /// Semantic action for production 64:
     ///
     /// CallArgumentOpt: ; // Option<T>::None
     ///
@@ -929,7 +785,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 77:
+    /// Semantic action for production 65:
     ///
     /// Expr0: Identifier;
     ///
@@ -941,7 +797,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 78:
+    /// Semantic action for production 66:
     ///
     /// Expr0: BooleanLiteral;
     ///
@@ -953,7 +809,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 79:
+    /// Semantic action for production 67:
     ///
     /// Expr0: FloatLiteral;
     ///
@@ -965,7 +821,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 80:
+    /// Semantic action for production 68:
     ///
     /// Expr0: IntegerLiteral;
     ///
@@ -977,7 +833,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 81:
+    /// Semantic action for production 69:
     ///
     /// Expr0: StringLiteral;
     ///
@@ -989,7 +845,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 82:
+    /// Semantic action for production 70:
     ///
     /// Expr0: BlockExpr;
     ///
@@ -1001,7 +857,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 83:
+    /// Semantic action for production 71:
     ///
     /// Expr0: AtomicBlock;
     ///
@@ -1013,7 +869,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 84:
+    /// Semantic action for production 72:
     ///
     /// Expr0: IfExpr;
     ///
@@ -1025,7 +881,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 85:
+    /// Semantic action for production 73:
     ///
     /// Expr0: Loop;
     ///
@@ -1037,7 +893,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 86:
+    /// Semantic action for production 74:
     ///
     /// Expr0: While;
     ///
@@ -1049,7 +905,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 87:
+    /// Semantic action for production 75:
     ///
     /// Expr0: Tuple;
     ///
@@ -1061,31 +917,19 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 88:
+    /// Semantic action for production 76:
     ///
-    /// BooleanLiteral: "true";
+    /// BooleanLiteral: "true|false";
     ///
-    fn boolean_literal_0(
+    fn boolean_literal(
         &mut self,
-        _true: &ParseTreeStackEntry,
+        _boolean_literal: &ParseTreeStackEntry,
         _parse_tree: &Tree<ParseTreeType>,
     ) -> Result<()> {
         Ok(())
     }
 
-    /// Semantic action for production 89:
-    ///
-    /// BooleanLiteral: "false";
-    ///
-    fn boolean_literal_1(
-        &mut self,
-        _false: &ParseTreeStackEntry,
-        _parse_tree: &Tree<ParseTreeType>,
-    ) -> Result<()> {
-        Ok(())
-    }
-
-    /// Semantic action for production 90:
+    /// Semantic action for production 77:
     ///
     /// Identifier: "[a-z|A-Z_][a-z|A-Z|0-9_]*";
     ///
@@ -1097,7 +941,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 91:
+    /// Semantic action for production 78:
     ///
     /// FloatLiteral: "[0-9][0-9_]*\.[0-9][0-9_]*";
     ///
@@ -1109,7 +953,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 92:
+    /// Semantic action for production 79:
     ///
     /// IntegerLiteral: "[0-9][0-9_]*";
     ///
@@ -1121,7 +965,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 93:
+    /// Semantic action for production 80:
     ///
     /// StringLiteral: "\u{0022}(?s:[^\u{0022}]*)\u{0022}";
     ///
@@ -1133,7 +977,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 94:
+    /// Semantic action for production 81:
     ///
     /// ReturnExpr: "return" ReturnExprOpt /* Option */;
     ///
@@ -1146,7 +990,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 95:
+    /// Semantic action for production 82:
     ///
     /// ReturnExprOpt: Expr; // Option<T>::Some
     ///
@@ -1158,7 +1002,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 96:
+    /// Semantic action for production 83:
     ///
     /// ReturnExprOpt: ; // Option<T>::None
     ///
@@ -1166,7 +1010,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 97:
+    /// Semantic action for production 84:
     ///
     /// BlockExpr: "\{" BlockExprList /* Vec */ BlockExprOpt /* Option */ "\}";
     ///
@@ -1181,7 +1025,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 98:
+    /// Semantic action for production 85:
     ///
     /// BlockExprList: Expr BlockExprList; // Vec<T>::Push
     ///
@@ -1194,7 +1038,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 99:
+    /// Semantic action for production 86:
     ///
     /// BlockExprList: ; // Vec<T>::New
     ///
@@ -1202,7 +1046,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 100:
+    /// Semantic action for production 87:
     ///
     /// BlockExprOpt: ReturnExpr; // Option<T>::Some
     ///
@@ -1214,7 +1058,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 101:
+    /// Semantic action for production 88:
     ///
     /// BlockExprOpt: ; // Option<T>::None
     ///
@@ -1222,7 +1066,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 102:
+    /// Semantic action for production 89:
     ///
     /// AtomicBlock: "atomic" BlockExpr;
     ///
@@ -1235,7 +1079,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 103:
+    /// Semantic action for production 90:
     ///
     /// IfExpr: "if" Condition BlockExpr IfExprOpt /* Option */;
     ///
@@ -1250,7 +1094,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 104:
+    /// Semantic action for production 91:
     ///
     /// IfExprOpt: "else" BlockExpr; // Option<T>::Some
     ///
@@ -1263,7 +1107,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 105:
+    /// Semantic action for production 92:
     ///
     /// IfExprOpt: ; // Option<T>::None
     ///
@@ -1271,7 +1115,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 106:
+    /// Semantic action for production 93:
     ///
     /// Condition: Expr;
     ///
@@ -1283,7 +1127,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 107:
+    /// Semantic action for production 94:
     ///
     /// Loop: "loop" BlockExpr;
     ///
@@ -1296,7 +1140,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 108:
+    /// Semantic action for production 95:
     ///
     /// While: "while" Condition BlockExpr;
     ///
@@ -1310,7 +1154,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 109:
+    /// Semantic action for production 96:
     ///
     /// Tuple: "tuple";
     ///
@@ -1322,7 +1166,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 110:
+    /// Semantic action for production 97:
     ///
     /// LocalVariable: LocalVariableOpt /* Option */ Identifier "=" Expr;
     ///
@@ -1337,7 +1181,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 111:
+    /// Semantic action for production 98:
     ///
     /// LocalVariableOpt: StorageMode; // Option<T>::Some
     ///
@@ -1349,7 +1193,7 @@ pub trait GrammarTrait {
         Ok(())
     }
 
-    /// Semantic action for production 112:
+    /// Semantic action for production 99:
     ///
     /// LocalVariableOpt: ; // Option<T>::None
     ///
@@ -1424,109 +1268,96 @@ impl UserActionsTrait<'_> for Grammar {
             33 => self.expr_1(&children[0], parse_tree),
             34 => self.expr5(&children[0], &children[1], parse_tree),
             35 => self.expr5_list_0(&children[0], &children[1], &children[2], parse_tree),
-            36 => self.expr5_list_group_0(&children[0], parse_tree),
-            37 => self.expr5_list_group_1(&children[0], parse_tree),
-            38 => self.expr5_list_group_2(&children[0], parse_tree),
-            39 => self.expr5_list_group_3(&children[0], parse_tree),
-            40 => self.expr5_list_group_4(&children[0], parse_tree),
-            41 => self.expr5_list_1(parse_tree),
-            42 => self.expr4(&children[0], &children[1], parse_tree),
-            43 => self.expr4_list_0(&children[0], &children[1], &children[2], parse_tree),
-            44 => self.expr4_list_group_0(&children[0], parse_tree),
-            45 => self.expr4_list_group_1(&children[0], parse_tree),
-            46 => self.expr4_list_group_2(&children[0], parse_tree),
-            47 => self.expr4_list_1(parse_tree),
-            48 => self.expr3(&children[0], &children[1], parse_tree),
-            49 => self.expr3_list_0(&children[0], &children[1], &children[2], parse_tree),
-            50 => self.expr3_list_group_0(&children[0], parse_tree),
-            51 => self.expr3_list_group_1(&children[0], parse_tree),
-            52 => self.expr3_list_1(parse_tree),
-            53 => self.expr2(&children[0], &children[1], parse_tree),
-            54 => self.expr2_list_0(&children[0], &children[1], &children[2], parse_tree),
-            55 => self.expr2_list_group_0(&children[0], parse_tree),
-            56 => self.expr2_list_group_1(&children[0], parse_tree),
-            57 => self.expr2_list_1(parse_tree),
-            58 => self.expr1(&children[0], &children[1], parse_tree),
-            59 => self.expr1_list_0(&children[0], &children[1], parse_tree),
-            60 => self.expr1_list_group_0(&children[0], parse_tree),
-            61 => self.expr1_list_group_1(&children[0], parse_tree),
-            62 => self.expr1_list_1(parse_tree),
-            63 => self.dot_expr(&children[0], &children[1], parse_tree),
-            64 => self.dot_suffix_0(&children[0], parse_tree),
-            65 => self.dot_suffix_1(&children[0], parse_tree),
-            66 => self.dot_suffix_2(&children[0], parse_tree),
-            67 => self.dot_suffix_3(&children[0], parse_tree),
-            68 => self.dot_suffix_4(&children[0], parse_tree),
-            69 => self.call_argument_list(&children[0], &children[1], parse_tree),
-            70 => self.call_argument_list_suffix_0(&children[0], parse_tree),
-            71 => self.call_argument_list_suffix_1(
+            36 => self.expr5_list_1(parse_tree),
+            37 => self.expr4(&children[0], &children[1], parse_tree),
+            38 => self.expr4_list_0(&children[0], &children[1], &children[2], parse_tree),
+            39 => self.expr4_list_1(parse_tree),
+            40 => self.expr3(&children[0], &children[1], parse_tree),
+            41 => self.expr3_list_0(&children[0], &children[1], &children[2], parse_tree),
+            42 => self.expr3_list_1(parse_tree),
+            43 => self.expr2(&children[0], &children[1], parse_tree),
+            44 => self.expr2_list_0(&children[0], &children[1], &children[2], parse_tree),
+            45 => self.expr2_list_1(parse_tree),
+            46 => self.expr1(&children[0], &children[1], parse_tree),
+            47 => self.expr1_list_0(&children[0], &children[1], parse_tree),
+            48 => self.expr1_list_group_0(&children[0], parse_tree),
+            49 => self.expr1_list_group_1(&children[0], parse_tree),
+            50 => self.expr1_list_1(parse_tree),
+            51 => self.dot_expr(&children[0], &children[1], parse_tree),
+            52 => self.dot_suffix_0(&children[0], parse_tree),
+            53 => self.dot_suffix_1(&children[0], parse_tree),
+            54 => self.dot_suffix_2(&children[0], parse_tree),
+            55 => self.dot_suffix_3(&children[0], parse_tree),
+            56 => self.dot_suffix_4(&children[0], parse_tree),
+            57 => self.call_argument_list(&children[0], &children[1], parse_tree),
+            58 => self.call_argument_list_suffix_0(&children[0], parse_tree),
+            59 => self.call_argument_list_suffix_1(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            72 => {
+            60 => {
                 self.call_argument_list_list_0(&children[0], &children[1], &children[2], parse_tree)
             }
-            73 => self.call_argument_list_list_1(parse_tree),
-            74 => self.call_argument(&children[0], &children[1], parse_tree),
-            75 => self.call_argument_opt_0(&children[0], &children[1], parse_tree),
-            76 => self.call_argument_opt_1(parse_tree),
-            77 => self.expr0_0(&children[0], parse_tree),
-            78 => self.expr0_1(&children[0], parse_tree),
-            79 => self.expr0_2(&children[0], parse_tree),
-            80 => self.expr0_3(&children[0], parse_tree),
-            81 => self.expr0_4(&children[0], parse_tree),
-            82 => self.expr0_5(&children[0], parse_tree),
-            83 => self.expr0_6(&children[0], parse_tree),
-            84 => self.expr0_7(&children[0], parse_tree),
-            85 => self.expr0_8(&children[0], parse_tree),
-            86 => self.expr0_9(&children[0], parse_tree),
-            87 => self.expr0_10(&children[0], parse_tree),
-            88 => self.boolean_literal_0(&children[0], parse_tree),
-            89 => self.boolean_literal_1(&children[0], parse_tree),
-            90 => self.identifier(&children[0], parse_tree),
-            91 => self.float_literal(&children[0], parse_tree),
-            92 => self.integer_literal(&children[0], parse_tree),
-            93 => self.string_literal(&children[0], parse_tree),
-            94 => self.return_expr(&children[0], &children[1], parse_tree),
-            95 => self.return_expr_opt_0(&children[0], parse_tree),
-            96 => self.return_expr_opt_1(parse_tree),
-            97 => self.block_expr(
+            61 => self.call_argument_list_list_1(parse_tree),
+            62 => self.call_argument(&children[0], &children[1], parse_tree),
+            63 => self.call_argument_opt_0(&children[0], &children[1], parse_tree),
+            64 => self.call_argument_opt_1(parse_tree),
+            65 => self.expr0_0(&children[0], parse_tree),
+            66 => self.expr0_1(&children[0], parse_tree),
+            67 => self.expr0_2(&children[0], parse_tree),
+            68 => self.expr0_3(&children[0], parse_tree),
+            69 => self.expr0_4(&children[0], parse_tree),
+            70 => self.expr0_5(&children[0], parse_tree),
+            71 => self.expr0_6(&children[0], parse_tree),
+            72 => self.expr0_7(&children[0], parse_tree),
+            73 => self.expr0_8(&children[0], parse_tree),
+            74 => self.expr0_9(&children[0], parse_tree),
+            75 => self.expr0_10(&children[0], parse_tree),
+            76 => self.boolean_literal(&children[0], parse_tree),
+            77 => self.identifier(&children[0], parse_tree),
+            78 => self.float_literal(&children[0], parse_tree),
+            79 => self.integer_literal(&children[0], parse_tree),
+            80 => self.string_literal(&children[0], parse_tree),
+            81 => self.return_expr(&children[0], &children[1], parse_tree),
+            82 => self.return_expr_opt_0(&children[0], parse_tree),
+            83 => self.return_expr_opt_1(parse_tree),
+            84 => self.block_expr(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            98 => self.block_expr_list_0(&children[0], &children[1], parse_tree),
-            99 => self.block_expr_list_1(parse_tree),
-            100 => self.block_expr_opt_0(&children[0], parse_tree),
-            101 => self.block_expr_opt_1(parse_tree),
-            102 => self.atomic_block(&children[0], &children[1], parse_tree),
-            103 => self.if_expr(
+            85 => self.block_expr_list_0(&children[0], &children[1], parse_tree),
+            86 => self.block_expr_list_1(parse_tree),
+            87 => self.block_expr_opt_0(&children[0], parse_tree),
+            88 => self.block_expr_opt_1(parse_tree),
+            89 => self.atomic_block(&children[0], &children[1], parse_tree),
+            90 => self.if_expr(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            104 => self.if_expr_opt_0(&children[0], &children[1], parse_tree),
-            105 => self.if_expr_opt_1(parse_tree),
-            106 => self.condition(&children[0], parse_tree),
-            107 => self.r#loop(&children[0], &children[1], parse_tree),
-            108 => self.r#while(&children[0], &children[1], &children[2], parse_tree),
-            109 => self.tuple(&children[0], parse_tree),
-            110 => self.local_variable(
+            91 => self.if_expr_opt_0(&children[0], &children[1], parse_tree),
+            92 => self.if_expr_opt_1(parse_tree),
+            93 => self.condition(&children[0], parse_tree),
+            94 => self.r#loop(&children[0], &children[1], parse_tree),
+            95 => self.r#while(&children[0], &children[1], &children[2], parse_tree),
+            96 => self.tuple(&children[0], parse_tree),
+            97 => self.local_variable(
                 &children[0],
                 &children[1],
                 &children[2],
                 &children[3],
                 parse_tree,
             ),
-            111 => self.local_variable_opt_0(&children[0], parse_tree),
-            112 => self.local_variable_opt_1(parse_tree),
+            98 => self.local_variable_opt_0(&children[0], parse_tree),
+            99 => self.local_variable_opt_1(parse_tree),
             _ => Err(miette!("Unhandled production number: {}", prod_num)),
         }
     }

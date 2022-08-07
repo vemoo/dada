@@ -36,13 +36,13 @@ FunctionBody : BlockExpr;
 Expr : LocalVariable
      | Expr5;
 
-Expr5 : Expr4 { ( "\+=" | "-=" | "/=" | "\*=" | ":=" ) Expr4 };
+Expr5 : Expr4 { ( "(?:\+|-|/|\*|:)=" ) Expr4 };
 
-Expr4 : Expr3 { ( "==" | "<" | ">" ) Expr3 };
+Expr4 : Expr3 { ( "==|<|>" ) Expr3 };
 
-Expr3 : Expr2 { ( "\+" | "-" ) Expr2 };
+Expr3 : Expr2 { ( "\+|-" ) Expr2 };
 
-Expr2 : Expr1 { ( "/" | "\*" ) Expr1 };
+Expr2 : Expr1 { ( "/|\*" ) Expr1 };
 
 Expr1 : Expr0 { ( DotExpr | CallArgumentList ) };
 
@@ -71,7 +71,7 @@ Expr0 : Identifier
       | While
       | Tuple;
 
-BooleanLiteral : "true" | "false";
+BooleanLiteral : "true|false";
 
 Identifier : "[a-z|A-Z_][a-z|A-Z|0-9_]*";
 

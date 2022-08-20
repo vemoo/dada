@@ -175,11 +175,12 @@ impl Options {
             .with_context(|| format!("reading `{}`", &source_path.display()))?;
 
         let input_file = db.new_input_file(&source_path, contents);
-        let diagnostics = db.diagnostics(input_file);
 
         let mut errors = Errors::default();
 
         if self.check_tree_sitter {
+            let grammar_diagnostics = db.grammar_diagnostics(input_file);
+
             let parser = match tree_sitter_parser {
                 Some(p) => p,
                 None => {
@@ -189,17 +190,20 @@ impl Options {
                     tree_sitter_parser.as_mut().unwrap()
                 }
             };
+
             let tree = parser
                 .parse(input_file.source_text(&db), None)
                 .ok_or_else(|| eyre::eyre!("failed to parse {}", source_path.display()))?;
-            if tree.root_node().has_error() != !expected_diagnostics.compile.is_empty() {
+            if tree.root_node().has_error() != !grammar_diagnostics.is_empty() {
                 errors.push_result(Err(if tree.root_node().has_error() {
                     eyre::eyre!("tree_sitter_dada: expected no error but error found")
                 } else {
-                    eyre::eyre!("tree_sitter_dada: expected error but none error found")
+                    eyre::eyre!("tree_sitter_dada: expected error but no error found")
                 }));
             }
         };
+
+        let diagnostics = db.diagnostics(input_file);
 
         self.match_diagnostics_against_expectations(
             &db,

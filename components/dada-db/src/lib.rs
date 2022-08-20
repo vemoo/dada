@@ -59,6 +59,12 @@ impl Db {
         )
     }
 
+    /// Checks `input_file` for grammar errors (errors from lexing and parsing) and returns all relevant diagnostics.
+    /// This is used to verify reference grammar and prodution grammar agree.
+    pub fn grammar_diagnostics(&self, input_file: InputFile) -> Vec<Diagnostic> {
+        dada_parse::grammar_diagnostics(self, input_file)
+    }
+
     /// Checks `input_file` for a function with the given name
     pub fn main_function(&self, input_file: InputFile) -> Option<Bir> {
         let source_file = input_file.source_file(self);

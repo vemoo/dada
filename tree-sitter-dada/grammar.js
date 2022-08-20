@@ -1,13 +1,16 @@
 /// <reference path="./node_modules/tree-sitter-cli/dsl.d.ts" />
 
 const Prec = {
-    assign: 0,
-    comparative: 1,
-    additive: 2,
-    multiplicative: 3,
-    unary: 4,
-    call: 5,
-    dot: 6,
+    variable_declaration: 0,
+    break: 1,
+    return: 2,
+    assign: 3,
+    comparative: 4,
+    additive: 5,
+    multiplicative: 6,
+    unary: 7,
+    call: 8,
+    dot: 9,
 };
 
 const BinaryOps = [
@@ -57,6 +60,8 @@ module.exports = grammar({
         expr: ($) =>
             choice(
                 $.variable_declaration,
+                $.continue,
+                $.break,
                 $.return,
                 $.identifier,
                 $.integer_literal,
@@ -79,7 +84,7 @@ module.exports = grammar({
         type: ($) => $.identifier,
         variable_declaration: ($) =>
             prec.left(
-                Prec.assign,
+                Prec.variable_declaration,
                 seq(
                     $._parameter_or_variable,
                     optional(seq(":", $.type)),
@@ -87,7 +92,9 @@ module.exports = grammar({
                     $.expr
                 )
             ),
-        return: ($) => prec.left(seq("return", optional($.expr))),
+        continue: () => "continue",
+        break: ($) => prec.left(Prec.break, seq("break", optional($.expr))),
+        return: ($) => prec.left(Prec.return, seq("return", optional($.expr))),
         integer_literal: () =>
             token(seq(NumberPart, optional(token.immediate(Identifier)))),
         float_literal: () =>
@@ -126,6 +133,8 @@ module.exports = grammar({
                     $.expr,
                     ".",
                     choice(
+                        // tuple index
+                        NumberPart,
                         "await",
                         "share",
                         "give",

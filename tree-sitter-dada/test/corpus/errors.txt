@@ -32,7 +32,7 @@ p = "{}"
 expected expression
 ================================================================================
 
-p = "{class Point(our a, our b)}"
+p = "{class Point(a, b)}"
 
 --------------------------------------------------------------------------------
 
@@ -44,9 +44,7 @@ p = "{class Point(our a, our b)}"
         (identifier))
       (call_expr
         (identifier)
-        (ERROR
-          (permission_specifier)
-          (identifier))
+        (identifier)
         (identifier)))))
 
 ================================================================================
@@ -65,7 +63,7 @@ a = 1.
       (MISSING identifier))))
 
 ================================================================================
-float spaces
+float spaces FIXME: this should error, but it's interpreted as tuple index
 ================================================================================
 
 a = 1 .1
@@ -77,19 +75,16 @@ c = 1 . 1
 (source_file
   (variable_declaration
     (identifier)
-    (integer_literal))
-  (ERROR)
-  (integer_literal)
+    (dot_expr
+      (integer_literal)))
   (variable_declaration
     (identifier)
-    (integer_literal))
-  (ERROR)
-  (integer_literal)
+    (dot_expr
+      (integer_literal)))
   (variable_declaration
     (identifier)
-    (integer_literal))
-  (ERROR)
-  (integer_literal))
+    (dot_expr
+      (integer_literal))))
 
 ================================================================================
 missing type

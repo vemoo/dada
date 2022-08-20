@@ -149,3 +149,64 @@ a.b()
     (dot_expr
       (identifier)
       (identifier))))
+
+================================================================================
+return
+================================================================================
+
+fn foo(){
+  return
+}
+
+fn bar(){
+  if x {
+    return
+  }
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function
+    (identifier)
+    (parameters)
+    (block_expr
+      (return)))
+  (function
+    (identifier)
+    (parameters)
+    (block_expr
+      (if_expr
+        (identifier)
+        (block_expr
+          (return))))))
+
+================================================================================
+continue & break
+================================================================================
+
+x = loop {
+  if a {
+    continue
+  }
+  if b {
+    break 12
+  }
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (variable_declaration
+    (identifier)
+    (loop_expr
+      (block_expr
+        (if_expr
+          (identifier)
+          (block_expr
+            (continue)))
+        (if_expr
+          (identifier)
+          (block_expr
+            (break
+              (integer_literal))))))))
